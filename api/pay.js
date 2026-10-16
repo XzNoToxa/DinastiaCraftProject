@@ -16,14 +16,12 @@ module.exports = async function(req, res) {
         "X-Secret": API_KEY
       },
       body: JSON.stringify({
-        paymentMethod: "CardRu", // Исправлено по требованию Platega
-        paymentDetails: {
-          amount: parseInt(amount) || 0,
-          currency: "RUB"
-        },
+        amount: parseInt(amount) || 0,
+        // Обязательное поле для кассы: команда, которая выполнится на сервере после оплаты
+        command: `lp user ${nick} parent set ${item.toLowerCase()}`, 
         description: `Покупка [${item}] для ${nick}`,
-        returnUrl: "https://www.dinastiacraft.store/",
-        failedUrl: "https://www.dinastiacraft.store/"
+        successUrl: "https://www.dinastiacraft.store/",
+        failUrl: "https://www.dinastiacraft.store/"
       })
     });
 
@@ -31,8 +29,12 @@ module.exports = async function(req, res) {
     
     try {
       const data = JSON.parse(text);
-      if (data.redirect || data.url) {
-        return res.status(200).json({ url: data.redirect || data.url });
+      
+      // Ищем ссылку на оплату в разных возможных полях ответа
+      const paymentLink = data.url || data.redirect || data.paymentUrl || data.payment_url;
+      
+      if (paymentLink) {
+        return res.status(200).json({ url: paymentLink });
       } else {
         return res.status(400).json({ error: 'Ошибка кассы: ' + JSON.stringify(data) });
       }
