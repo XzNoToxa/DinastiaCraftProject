@@ -16,7 +16,6 @@ module.exports = async function(req, res) {
         "X-Secret": API_KEY
       },
       body: JSON.stringify({
-        paymentMethod: "CardRu", 
         paymentDetails: {
           amount: parseInt(amount) || 0,
           currency: "RUB"
@@ -32,7 +31,6 @@ module.exports = async function(req, res) {
     
     try {
       const data = JSON.parse(text);
-      
       const paymentLink = data.url || data.redirect || data.paymentUrl || data.payment_url;
       
       if (paymentLink) {
