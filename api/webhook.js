@@ -81,7 +81,7 @@ module.exports = async function(req, res) {
           console.log(`Выдан разбан для игрока ${nick}`);
         } else {
           // Выдаем привилегию через LuckPerms
-          await sendRconCommand(`lp user ${nick} parent set ${item}`);
+          await sendRconCommand(`lp user ${nick} parent add ${item}`);
           console.log(`Выдана привилегия [${item}] для игрока ${nick}`);
         }
       }
