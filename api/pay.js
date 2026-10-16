@@ -6,14 +6,14 @@ export default async function handler(req, res) {
   const API_KEY = process.env.PLATEGA_API_KEY; 
 
   try {
-    const response = await fetch("https://api.platega.io/v1/payments/create", {
+    const response = await fetch("https://app.platega.io/api/payment/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${API_KEY}`
+        "X-MerchantId": MERCHANT_ID,
+        "X-Secret": API_KEY || ""
       },
       body: JSON.stringify({
-        merchant_id: MERCHANT_ID,
         amount: amount,
         order_id: `${nick}_${Date.now()}`,
         description: `Покупка [${item}] для игрока ${nick}`
@@ -23,16 +23,16 @@ export default async function handler(req, res) {
     const text = await response.text();
     try {
       const data = JSON.parse(text);
-      // Проверяем разные форматы ответа Platega
       if (data.url || data.payment_url) {
         return res.status(200).json({ url: data.url || data.payment_url });
       } else {
         return res.status(400).json({ error: 'Отказ кассы: ' + JSON.stringify(data).substring(0, 100) });
       }
     } catch (e) {
-      return res.status(500).json({ error: `Platega вернула странный ответ: ${text.substring(0, 100)}` });
+      return res.status(500).json({ error: `Неверный формат ответа Platega: ${text.substring(0, 100)}` });
     }
   } catch (error) {
     return res.status(500).json({ error: `Сетевая ошибка: ${error.message}` });
   }
 }
+```"
