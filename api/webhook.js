@@ -10,7 +10,6 @@ function sendRconCommand(command) {
     const client = new net.Socket();
     let authenticated = false;
 
-    // Простой пакет RCON (Server-to-Client / Client-to-Server пакеты)
     function writePacket(id, type, payload) {
       const payloadBuf = Buffer.from(payload, 'utf8');
       const length = payloadBuf.length + 10;
@@ -25,7 +24,7 @@ function sendRconCommand(command) {
     }
 
     client.connect(port, host, () => {
-      // Отправляем пакет авторизации (тип 3)
+      // Отправляем пакет авторизации RCON (тип 3)
       writePacket(1, 3, password);
     });
 
@@ -35,15 +34,14 @@ function sendRconCommand(command) {
 
       if (!authenticated) {
         if (id === 1 && type === 2) {
-          // Авторизация успешна, отправляем саму команду (тип 2)
           authenticated = true;
+          // Отправляем саму команду (тип 2)
           writePacket(2, 2, command);
         } else {
           client.destroy();
           reject(new Error("RCON Authentication failed"));
         }
       } else {
-        // Команда выполнена
         client.destroy();
         resolve(true);
       }
@@ -63,22 +61,30 @@ module.exports = async function(req, res) {
 
   try {
     const event = req.body || {};
-    
-    // Структура вебхука Platega согласно документации
     const status = event.status;
-    const description = event.description || ""; // Здесь у нас зашита команда или инфо о товаре
-    const paymentDetails = event.paymentDetails || {};
-    
-    // Проверяем, что платеж успешно подтвержден (CONFIRMED)
+    const description = event.description || "";
+
+    // Проверяем, что платеж успешно подтвержден кассой Platega
     if (status === 'CONFIRMED') {
-      // Пример описания товара/команды, переданной при создании платежа: "Покупка [VIP] для XzNoToxa" или готовая команда
-      // Парсим ник игрока и товар из описания
+      console.log(`Успешный платеж подтвержден: ${description}`);
+
+      // Парсим описание вида: "Покупка [VIP] для XzNoToxa" или "Покупка [Разбан] для XzNoToxa"
+      const match = description.match(/Покупка \[(.*?)\] для (.*)/i);
       
-      console.log(`Успешный платеж обработан: ${description}`);
-      
-      // Пример автоматического выполнения консольной команды через RCON:
-      // Если в description передана команда или мы формируем её на лету:
-      // await sendRconCommand(`lp user ${nick} parent set ${item}`);
+      if (match) {
+        const item = match[1].toLowerCase().trim();
+        const nick = match[2].trim();
+
+        if (item.includes('разбан') || item.includes('unban')) {
+          // Выполняем разбан (в зависимости от плагина: unban или pardon)
+          await sendRconCommand(`unban ${nick}`);
+          console.log(`Выдан разбан для игрока ${nick}`);
+        } else {
+          // Выдаем привилегию через LuckPerms
+          await sendRconCommand(`lp user ${nick} parent set ${item}`);
+          console.log(`Выдана привилегия [${item}] для игрока ${nick}`);
+        }
+      }
 
       return res.status(200).json({ success: true });
     }
