@@ -1,11 +1,12 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
 
   const { amount, nick, item } = req.body;
-  
-  // Твой ID магазина Platega
+  // Merchant ID (публичный)
   const MERCHANT_ID = "36a5076d-f4ce-4dde-820e-70b3baa91f2d";
-  // Секретный ключ берется из скрытых настроек Vercel
+  // Секретный API ключ берем из переменных окружения Vercel
   const API_KEY = process.env.PLATEGA_API_KEY; 
 
   try {
@@ -28,9 +29,9 @@ export default async function handler(req, res) {
     if (data.payment_url) {
       return res.status(200).json({ url: data.payment_url });
     } else {
-      return res.status(400).json({ error: 'Ошибка создания платежа', details: data });
+      return res.status(400).json({ error: 'Ошибка создания платежа в Platega', details: data });
     }
   } catch (error) {
-    return res.status(500).json({ error: 'Ошибка сервера' });
+    return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
   }
 }

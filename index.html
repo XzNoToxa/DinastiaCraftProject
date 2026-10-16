@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>DYNASTIA CRAFT — Сервер Жёсткой Анархии Minecraft | Донат Магазин</title>
-<meta name="description" content="Официальный сайт сервера Minecraft DYNASTIA CRAFT (dinastia.mc-join.pro). Жёсткая анархия, Crystal PvP, кланы, взрывы баз и донат магазин.">
+<meta name="description" content="Официальный сайт сервера Minecraft DYNASTIA CRAFT (dinastia.mc-join.pro). Жёсткая анархия, Crystal PvP, кланы, взрывы баз, кристаллы Края и донат магазин.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
@@ -653,6 +653,66 @@ h1.hero-title span.glow-purple {
   line-height: 1.5;
   white-space: pre-line;
   border-left: 3px solid var(--crystal-purple);
+}
+
+/* PR Monitoring & Voting Hub */
+.pr-monitoring-hub {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.pr-hub-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 700 0.72rem var(--font-mono);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+}
+
+.pr-hub-verified {
+  color: var(--emerald);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pr-buttons-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pr-btn {
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: 600 0.78rem var(--font-ui);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.pr-btn:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: var(--crystal-purple);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.pr-btn-vote {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(244, 63, 94, 0.2));
+  border-color: rgba(168, 85, 247, 0.4);
+  color: #fff;
+  font-weight: 700;
 }
 
 /* ==================== STORE SECTION ==================== */
@@ -1469,13 +1529,13 @@ dialog::backdrop {
     <div class="hero-backdrop" aria-hidden="true"></div>
     <div class="hero-grid">
       <div class="hero-content">
-        <div class="tag-badge">🔮 Сезон Жёсткой Анархии & Crystal PvP</div>
+        <div class="tag-badge">🔮 Сезон Жёсткой Анархии & Эпическое PvP</div>
         <h1 class="hero-title">
           ТОТАЛЬНАЯ АНАРХИЯ.<br>
-          <span class="glow-purple">ВЛАСТЬ КРИСТАЛЛОВ.</span>
+          <span class="glow-purple">ВЛАСТЬ АНАРХИСТОВ.</span>
         </h1>
         <p class="hero-desc">
-          Взрывай чужие базы динамитными пушками, объединяйся в безжалостные кланы и доминируй в беспощадных PvP-битвах. Здесь нет ограничений — закон диктует сильнейший!
+          Взрывай чужие базы динамитными пушками, объединяйся в безжалостные кланы и доминируй в беспощадных PvP-битвах. Здесь — закон диктует сильнейший!
         </p>
         <div class="hero-actions">
           <a class="btn btn-purple" href="#donate">
@@ -1502,8 +1562,8 @@ dialog::backdrop {
             <div class="stat-label">Стабильный TPS</div>
           </div>
           <div class="stat-item">
-            <div class="stat-num"><span class="icon">🔮</span> Crystal</div>
-            <div class="stat-label">PvP Без правил</div>
+            <div class="stat-num"><span class="icon">🔮</span> PvP</div>
+            <div class="stat-label">PvP с уникальными предметами!</div>
           </div>
         </div>
       </div>
@@ -1551,6 +1611,24 @@ dialog::backdrop {
         <!-- MOTD Box -->
         <div class="terminal-motd-box" id="heroMotd">✦ DYNASTIA CRAFT ✦
 ⚔ Жесткая Анархия • Веселью нет границ ⚔</div>
+
+        <!-- PR Monitoring & MisterLauncher Hub -->
+        <div class="pr-monitoring-hub">
+          <div class="pr-hub-label">
+            <span>Мониторинг & Рейтинг Сервера</span>
+            <span class="pr-hub-verified">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+          </div>
+          <div class="pr-buttons-row">
+            <a class="pr-btn pr-btn-vote" href="https://misterlauncher.org/vote/97934/" target="_blank" rel="noopener">
+              <span>★ Голосовать за сервер</span>
+            </a>
+            <a class="pr-btn" href="https://misterlauncher.org/server/97934/" target="_blank" rel="noopener">
+              <span>🔍 Страница в топе</span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1561,7 +1639,7 @@ dialog::backdrop {
       <span class="section-badge">АРСЕНАЛ АНАРХИИ</span>
       <h2 class="section-title">Игровые Привилегии</h2>
       <p class="section-sub">
-        От начинающих рейдеров до древних боссов Края. Получи легендарные наборы /kit, кристаллы, сферы, точки домов и команды для захвата мира. Активация мгновенная!
+        От начинающих рейдеров до древних боссов Края. Получи легендарные наборы /kit, оружия, сферы, тотемы, точки домов и команды для захвата мира. Активация мгновенная!
       </p>
     </div>
 
@@ -1614,8 +1692,8 @@ dialog::backdrop {
         <div class="feature-icon-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
         </div>
-        <h3 class="feature-title">Crystal & Totem PvP</h3>
-        <p class="feature-desc">Любишь соревновательный экшен? Полная поддержка боев на якорях возрождения, тотемах и зачарованных яблоках.</p>
+        <h3 class="feature-title">Elytra PvP & Totem PvP</h3>
+        <p class="feature-desc">Любишь соревновательный экшен? Полная поддержка боев на уникальных предметах, якорях возрождения, тотемах и зачарованных яблоках.</p>
       </div>
 
       <div class="feature-card">
@@ -1623,7 +1701,7 @@ dialog::backdrop {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
         <h3 class="feature-title">Мощный Античит 24/7</h3>
-        <p class="feature-desc">Анархия — это не игра с читами. KillAura, Fly, X-Ray, спидхак и боты моментально блокируются. Битва должна быть честной!</p>
+        <p class="feature-desc">Анархия — это не игра с читами. KillAura, Rich, X-Ray, спидхак и боты моментально блокируются. Битва должна быть честной!</p>
       </div>
     </div>
   </section>
@@ -1632,9 +1710,9 @@ dialog::backdrop {
   <section class="section" id="rules">
     <div class="section-head">
       <span class="section-badge">КОДЕКС АНАРХИИ</span>
-      <h2 class="section-title">Законы Сервера</h2>
+      <h2 class="section-title">Упрощённые Законы Сервера</h2>
       <p class="section-sub">
-        Простые правила, которые обеспечивают чистый драйв и равенство возможностей.
+        Простые правила, которые обеспечивают чистый драйв и равенство возможностей. Полный список в нашем discord канале.
       </p>
     </div>
 
@@ -1648,13 +1726,13 @@ dialog::backdrop {
       <div class="rule-tablet">
         <div class="rule-num">ЗАКОН II</div>
         <h3 class="rule-name">Читы строго запрещены</h3>
-        <p class="rule-text">Любые чит-клиенты (X-Ray, Fly, Baritone, KillAura), макросы и попытки краша сервера караются перманентным баном по железу.</p>
+        <p class="rule-text">Любые чит-клиенты (X-Ray, Rich, Baritone, KillAura), макросы и попытки краша сервера караются перманентным баном по железу.</p>
       </div>
 
       <div class="rule-tablet">
         <div class="rule-num">ЗАКОН III</div>
         <h3 class="rule-name">Порядок в чате</h3>
-        <p class="rule-text">Запрещены реклама чужих проектов, продажа за реал вне сайта, спам ботами и оскорбления родных в общем чате.</p>
+        <p class="rule-text">Запрещены реклама чужих проектов, продажа за реал вне сайта, спам ботами и оскорбления в общем чате.</p>
       </div>
 
       <div class="rule-tablet">
@@ -2184,7 +2262,7 @@ function renderRanks(filter = "all", query = "") {
           ${r.previewPerks.map(p => `
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>\${p}</span>
+              <span>${p}</span>
             </li>
           `).join("")}
         </ul>
@@ -2207,11 +2285,11 @@ document.querySelectorAll(".filter-tab").forEach(tab => {
     document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
     currentFilter = tab.dataset.filter;
-    renderRanks(currentFilter, \$("#rankSearch").value);
+    renderRanks(currentFilter, $("#rankSearch").value);
   });
 });
 
-\$("#rankSearch").addEventListener("input", (e) => {
+$("#rankSearch").addEventListener("input", (e) => {
   renderRanks(currentFilter, e.target.value);
 });
 
@@ -2220,9 +2298,9 @@ function copyServerIp() {
   const ip = CONFIG.serverIp;
   navigator.clipboard.writeText(ip).then(() => {
     showToast("IP скопирован в буфер: " + ip);
-    const copyLbl = \$("#copyLabel");
+    const copyLbl = $("#copyLabel");
     if (copyLbl) copyLbl.innerHTML = `<span>✓</span>`;
-    const termLbl = \$("#termCopyLabel");
+    const termLbl = $("#termCopyLabel");
     if (termLbl) termLbl.textContent = "Скопировано!";
     setTimeout(() => {
       if (copyLbl) copyLbl.innerHTML = `<span>IP</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
@@ -2233,13 +2311,13 @@ function copyServerIp() {
   });
 }
 
-\$("#btnCopyIp").addEventListener("click", copyServerIp);
-\$("#btnCopyIp").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") copyServerIp(); });
-\$("#heroCopyBtn").addEventListener("click", copyServerIp);
-\$("#terminalCopyBtn").addEventListener("click", copyServerIp);
+$("#btnCopyIp").addEventListener("click", copyServerIp);
+$("#btnCopyIp").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") copyServerIp(); });
+$("#heroCopyBtn").addEventListener("click", copyServerIp);
+$("#terminalCopyBtn").addEventListener("click", copyServerIp);
 
 function showToast(text) {
-  const t = \$("#toast");
+  const t = $("#toast");
   t.querySelector("span").textContent = text;
   t.classList.add("show");
   setTimeout(() => t.classList.remove("show"), 3200);
@@ -2258,24 +2336,24 @@ async function updateServerMonitoring() {
       const pct = Math.max(4, Math.min(100, Math.round((online / max) * 100)));
 
       // Update Header Pill
-      \$("#navOnlineCount").textContent = online;
+      $("#navOnlineCount").textContent = online;
       
       // Update Terminal Box
-      \$("#heroOnline").textContent = online;
-      \$("#heroMax").textContent = max;
-      \$("#onlineProgress").style.width = pct + "%";
+      $("#heroOnline").textContent = online;
+      $("#heroMax").textContent = max;
+      $("#onlineProgress").style.width = pct + "%";
       
-      \$("#terminalStatusText").textContent = "Онлайн";
-      \$("#terminalStatus").style.color = "#34d399";
-      \$("#terminalStatus").style.borderColor = "rgba(16, 185, 129, 0.4)";
+      $("#terminalStatusText").textContent = "Онлайн";
+      $("#terminalStatus").style.color = "#34d399";
+      $("#terminalStatus").style.borderColor = "rgba(16, 185, 129, 0.4)";
 
       if (data.motd && data.motd.clean) {
-        \$("#heroMotd").textContent = data.motd.clean;
+        $("#heroMotd").textContent = data.motd.clean;
       }
     } else {
-      \$("#terminalStatusText").textContent = "Оффлайн";
-      \$("#terminalStatus").style.color = "#f43f5e";
-      \$("#terminalStatus").style.borderColor = "rgba(244, 63, 94, 0.4)";
+      $("#terminalStatusText").textContent = "Оффлайн";
+      $("#terminalStatus").style.color = "#f43f5e";
+      $("#terminalStatus").style.borderColor = "rgba(244, 63, 94, 0.4)";
     }
   } catch (err) {
     console.warn("Monitoring update failed:", err);
@@ -2296,7 +2374,7 @@ document.querySelectorAll("[data-mod]").forEach(e => {
 const co = $("#co"), nick = $("#nick"), agree = $("#agree"), go = $("#go"), hint = $("#hint"), pHead = $("#playerHead");
 let activeOrderRank = null;
 
-const okNick = () => /^[A-Za-z0-9_]{3,16}\$/.test(nick.value);
+const okNick = () => /^[A-Za-z0-9_]{3,16}$/.test(nick.value);
 
 function checkOrderForm() {
   const hasInput = nick.value.length > 0;
@@ -2316,13 +2394,13 @@ nick.addEventListener("input", checkOrderForm);
 agree.addEventListener("change", checkOrderForm);
 
 /* Perks Modal Logic */
-const perksDialog = \$("#perksDialog");
+const perksDialog = $("#perksDialog");
 function openPerksModal(rankId) {
   const r = RANKS.find(item => item.id === rankId);
   if (!r) return;
   activeOrderRank = r;
-  \$("#perksT").textContent = `Привилегия ${r.name} — ${r.tag}`;
-  \$("#perksContent").innerHTML = `
+  $("#perksT").textContent = `Привилегия ${r.name} — ${r.tag}`;
+  $("#perksContent").innerHTML = `
     <div style="display:flex; gap:16px; align-items:center; margin-bottom:18px;">
       <img src="img/${r.id}.jpg" style="width:70px; aspect-ratio:2/3; object-fit:cover; border-radius:8px; border:1px solid ${r.color};" alt="${r.name}">
       <div>
@@ -2343,9 +2421,9 @@ function openPerksModal(rankId) {
   perksDialog.showModal();
 }
 
-\$("#perksCloseX").onclick = () => perksDialog.close();
-\$("#perksCloseBtn").onclick = () => perksDialog.close();
-\$("#perksBuyBtn").onclick = () => {
+$("#perksCloseX").onclick = () => perksDialog.close();
+$("#perksCloseBtn").onclick = () => perksDialog.close();
+$("#perksBuyBtn").onclick = () => {
   perksDialog.close();
   if (activeOrderRank) openOrderModal(activeOrderRank.id);
 };
@@ -2354,10 +2432,10 @@ function openOrderModal(rankId) {
   const r = RANKS.find(item => item.id === rankId);
   if (!r) return;
   activeOrderRank = r;
-  \$("#oi").src = `img/${r.id}.jpg`;
-  \$("#oi").alt = r.name;
-  \$("#sumRank").textContent = `Привилегия ${r.name}`;
-  \$("#sumPrice").textContent = `${fmt(r.priceRub)} ₽ (${r.priceUsd} $)`;
+  $("#oi").src = `img/${r.id}.jpg`;
+  $("#oi").alt = r.name;
+  $("#sumRank").textContent = `Привилегия ${r.name}`;
+  $("#sumPrice").textContent = `${fmt(r.priceRub)} ₽ (${r.priceUsd} $)`;
   nick.value = "";
   agree.checked = false;
   go.textContent = "Перейти к оплате";
@@ -2385,15 +2463,15 @@ document.addEventListener("click", e => {
     const docKey = docBtn.dataset.doc;
     const doc = DOCS[docKey];
     if (doc) {
-      \$("#lgT").textContent = doc[0];
-      \$("#lgB").innerHTML = doc.slice(1).join("");
-      \$("#lg").showModal();
+      $("#lgT").textContent = doc[0];
+      $("#lgB").innerHTML = doc.slice(1).join("");
+      $("#lg").showModal();
     }
   }
 });
 
-\$("#cancel").onclick = () => co.close();
-\$("#modalCloseX").onclick = () => co.close();
+$("#cancel").onclick = () => co.close();
+$("#modalCloseX").onclick = () => co.close();
 $("#lgX").onclick = () => $("#lg").close();
 $("#docCloseX").onclick = () => $("#lg").close();
 
@@ -2424,9 +2502,9 @@ go.onclick = async () => {
     const data = await response.json();
 
     if (data.url) {
-      window.location.href = data.url; // Перекидываем на кассу Platega
+      window.location.href = data.url;
     } else {
-      alert("Ошибка платежа: Обратитесь в поддержку.");
+      alert("Ошибка платежа: " + (data.error || "Обратитесь в поддержку."));
       go.textContent = "Перейти к оплате";
       go.disabled = false;
     }
@@ -2438,7 +2516,7 @@ go.onclick = async () => {
 };
 
 /* ==================== ATMOSPHERIC PURPLE CRYSTAL SHARDS FX ==================== */
-const canvas = \$("#fx");
+const canvas = $("#fx");
 const ctx = canvas.getContext("2d");
 let width, height;
 let shards = [];
