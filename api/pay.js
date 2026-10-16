@@ -16,12 +16,14 @@ module.exports = async function(req, res) {
         "X-Secret": API_KEY
       },
       body: JSON.stringify({
-        amount: parseInt(amount) || 0,
-        // Обязательное поле для кассы: команда, которая выполнится на сервере после оплаты
+        paymentDetails: {
+          amount: parseInt(amount) || 0,
+          currency: "RUB"
+        },
         command: `lp user ${nick} parent set ${item.toLowerCase()}`, 
         description: `Покупка [${item}] для ${nick}`,
-        successUrl: "https://www.dinastiacraft.store/",
-        failUrl: "https://www.dinastiacraft.store/"
+        returnUrl: "https://www.dinastiacraft.store/",
+        failedUrl: "https://www.dinastiacraft.store/"
       })
     });
 
@@ -30,7 +32,6 @@ module.exports = async function(req, res) {
     try {
       const data = JSON.parse(text);
       
-      // Ищем ссылку на оплату в разных возможных полях ответа
       const paymentLink = data.url || data.redirect || data.paymentUrl || data.payment_url;
       
       if (paymentLink) {
