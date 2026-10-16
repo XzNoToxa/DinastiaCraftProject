@@ -8,7 +8,7 @@ module.exports = async function(req, res) {
   const API_KEY = process.env.PLATEGA_API_KEY || "";
 
   try {
-    const response = await fetch("https://app.platega.io/transaction/process", {
+    const response = await fetch("https://app.platega.io/v2/transaction/process", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,8 +22,8 @@ module.exports = async function(req, res) {
         },
         command: `lp user ${nick} parent set ${item.toLowerCase()}`, 
         description: `Покупка [${item}] для ${nick}`,
-        successUrl: "https://www.dinastiacraft.store/",
-        failUrl: "https://www.dinastiacraft.store/"
+        return: "https://www.dinastiacraft.store/",      // Поле из документации
+        failedUrl: "https://www.dinastiacraft.store/"    // Поле из документации
       })
     });
 
@@ -31,6 +31,7 @@ module.exports = async function(req, res) {
     
     try {
       const data = JSON.parse(text);
+      
       const paymentLink = data.url || data.redirect || data.paymentUrl || data.payment_url;
       
       if (paymentLink) {
