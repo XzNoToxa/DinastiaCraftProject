@@ -1,0 +1,2530 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DYNASTIA CRAFT — Сервер Жёсткой Анархии Minecraft | Донат Магазин</title>
+<meta name="description" content="Официальный сайт сервера Minecraft DYNASTIA CRAFT (dinastia.mc-join.pro). Жёсткая анархия, Crystal PvP, кланы, взрывы баз и донат магазин.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #090710;
+  --bg-card: #120c1f;
+  --bg-card-hover: #18102a;
+  --panel: #150e24;
+  --border: #2c1a4d;
+  --border-light: rgba(168, 85, 247, 0.2);
+  --border-glow: rgba(168, 85, 247, 0.5);
+  
+  --text-main: #f3f0fa;
+  --text-muted: #a69bb8;
+  --text-subtle: #73648a;
+
+  --crystal-purple: #a855f7;
+  --crystal-violet: #c084fc;
+  --crystal-pink: #f472b6;
+  --crystal-cyan: #22d3ee;
+  --gold: #fbbf24;
+  --gold-bright: #fde047;
+  --crimson: #ef4444;
+  --emerald: #10b981;
+  --sculk: #14b8a6;
+
+  --font-title: "Cinzel", "Times New Roman", serif;
+  --font-ui: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  color-scheme: dark;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text-main);
+  background: var(--bg-dark);
+  font: 400 15px/1.6 var(--font-ui);
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Background canvas for End crystal sparkles & purple embers */
+#fx {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Dark crystal vignette & ambient aura */
+.ambient-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.16) 0%, transparent 60%),
+    radial-gradient(circle at 10% 35%, rgba(192, 132, 252, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 90% 65%, rgba(34, 211, 238, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at center, transparent 0%, rgba(6, 4, 11, 0.85) 100%);
+}
+
+header, main, footer, dialog {
+  position: relative;
+  z-index: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--crystal-purple);
+  outline-offset: 3px;
+}
+
+/* ==================== TOP NAVIGATION ==================== */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(9, 7, 16, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px clamp(16px, 4vw, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-img-wrap {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #24143d, #120c1f);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logo-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.logo-block:hover .logo-img-wrap {
+  transform: scale(1.06);
+  box-shadow: 0 0 28px rgba(168, 85, 247, 0.6);
+}
+
+.logo-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font: 800 1.2rem var(--font-title);
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 20%, #c084fc 60%, #a855f7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo-sub {
+  font: 700 0.68rem var(--font-mono);
+  letter-spacing: 0.16em;
+  color: var(--crystal-violet);
+  text-transform: uppercase;
+}
+
+nav.main-menu {
+  display: flex;
+  gap: 4px;
+}
+
+nav.main-menu a {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+nav.main-menu a:hover {
+  color: #fff;
+  background: rgba(168, 85, 247, 0.12);
+}
+
+.server-ip-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #130d22;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.server-ip-badge:hover {
+  border-color: var(--crystal-purple);
+  background: #1b1230;
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.35);
+}
+
+.status-dot-wrap {
+  position: relative;
+  width: 10px;
+  height: 10px;
+}
+
+.status-dot {
+  position: absolute;
+  inset: 0;
+  background: var(--emerald);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--emerald);
+}
+
+.status-ping {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--emerald);
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  0% { transform: scale(0.8); opacity: 1; }
+  75%, 100% { transform: scale(2.2); opacity: 0; }
+}
+
+.ip-text-wrap {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.ip-label {
+  font: 700 0.65rem var(--font-mono);
+  color: var(--emerald);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ip-val {
+  font: 800 0.88rem var(--font-mono);
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.copy-icon-btn {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--crystal-violet);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.server-ip-badge:hover .copy-icon-btn {
+  background: var(--crystal-purple);
+  color: #fff;
+  border-color: var(--crystal-violet);
+}
+
+/* ==================== BUTTONS ==================== */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font: 700 0.95rem var(--font-ui);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.btn-purple {
+  background: linear-gradient(180deg, #b066fe 0%, #7c3aed 100%);
+  color: #fff;
+  border-color: #d8b4fe;
+  box-shadow: 
+    0 2px 0 rgba(255, 255, 255, 0.35) inset,
+    0 -2px 0 rgba(0, 0, 0, 0.4) inset,
+    0 8px 24px -4px rgba(168, 85, 247, 0.5);
+}
+
+.btn-purple:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #c084fc 0%, #8b5cf6 100%);
+  box-shadow: 
+    0 2px 0 rgba(255, 255, 255, 0.5) inset,
+    0 -2px 0 rgba(0, 0, 0, 0.4) inset,
+    0 12px 30px -4px rgba(168, 85, 247, 0.75);
+}
+
+.btn-stone {
+  background: linear-gradient(180deg, #231838 0%, #171026 100%);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 0 rgba(255, 255, 255, 0.08) inset, 0 4px 14px rgba(0,0,0,0.5);
+}
+
+.btn-stone:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  background: linear-gradient(180deg, #2d2047 0%, #1e1432 100%);
+  transform: translateY(-2px);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  border-radius: 8px;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ==================== HERO SECTION ==================== */
+.hero {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  padding: clamp(50px, 7vw, 90px) clamp(16px, 4vw, 48px) 40px;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.hero-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: url("img/hero-bg.jpg") center top / cover no-repeat;
+  opacity: 0.32;
+  pointer-events: none;
+  z-index: -1;
+  mask-image: radial-gradient(ellipse at 50% 35%, black 20%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 35%, black 20%, transparent 85%);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: var(--crystal-violet);
+  font: 700 0.8rem var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  width: fit-content;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.2);
+}
+
+h1.hero-title {
+  margin: 0;
+  font: 800 clamp(2.4rem, 5.2vw, 4.2rem)/1.1 var(--font-title);
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.8);
+}
+
+h1.hero-title span.glow-purple {
+  color: var(--crystal-violet);
+  background: linear-gradient(180deg, #ffffff 10%, #d8b4fe 50%, #a855f7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+}
+
+.hero-desc {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 54ch;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.hero-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  padding-top: 24px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-num {
+  font: 800 1.45rem var(--font-title);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-num span.icon {
+  font-size: 1.1rem;
+}
+
+.stat-label {
+  font: 700 0.78rem var(--font-mono);
+  color: var(--text-subtle);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ==================== HERO MONITORING TERMINAL ==================== */
+.hero-monitoring-terminal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 
+    0 20px 50px -10px rgba(0, 0, 0, 0.8),
+    0 0 35px -8px rgba(168, 85, 247, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-monitoring-terminal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #a855f7, #22d3ee, #f472b6, #a855f7);
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.terminal-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.terminal-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: #1c142c;
+  border: 2px solid var(--crystal-purple);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.terminal-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.terminal-title-wrap h3 {
+  margin: 0;
+  font: 800 1.25rem var(--font-title);
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.terminal-title-wrap p {
+  margin: 2px 0 0;
+  font: 700 0.72rem var(--font-mono);
+  color: var(--crystal-violet);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.terminal-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font: 700 0.75rem var(--font-mono);
+  text-transform: uppercase;
+}
+
+/* Live Online Bar */
+.online-stat-box {
+  background: #18102a;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.online-stat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.online-stat-title {
+  font: 700 0.8rem var(--font-mono);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.online-stat-numbers {
+  font: 800 1.4rem var(--font-mono);
+  color: #fff;
+}
+
+.online-stat-numbers span.max {
+  font-size: 0.95rem;
+  color: var(--text-subtle);
+  font-weight: 600;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 5%;
+  min-width: 14px;
+  background: linear-gradient(90deg, #10b981, #22d3ee, #a855f7);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+}
+
+/* IP Quick Copy Panel */
+.ip-copy-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #0f0a1c;
+  border: 1px dashed rgba(168, 85, 247, 0.45);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.ip-copy-val {
+  font: 800 1.05rem var(--font-mono);
+  color: var(--gold-bright);
+  letter-spacing: 0.04em;
+  user-select: all;
+}
+
+.ip-copy-btn {
+  background: var(--crystal-purple);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font: 700 0.82rem var(--font-ui);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ip-copy-btn:hover {
+  background: var(--crystal-violet);
+  transform: scale(1.03);
+}
+
+/* MOTD and Server details */
+.terminal-motd-box {
+  background: #140d24;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font: 600 0.82rem var(--font-mono);
+  color: #d8b4fe;
+  line-height: 1.5;
+  white-space: pre-line;
+  border-left: 3px solid var(--crystal-purple);
+}
+
+/* ==================== STORE SECTION ==================== */
+.section {
+  padding: clamp(60px, 8vw, 100px) clamp(16px, 4vw, 48px);
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.section-head {
+  text-align: center;
+  max-width: 740px;
+  margin: 0 auto 40px;
+}
+
+.section-badge {
+  display: inline-block;
+  font: 800 0.78rem var(--font-mono);
+  letter-spacing: 0.2em;
+  color: var(--crystal-violet);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  margin: 0 0 16px;
+  font: 800 clamp(2rem, 4vw, 3rem) var(--font-title);
+  color: #fff;
+  letter-spacing: 0.03em;
+}
+
+.section-sub {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+/* Filter Controls */
+.shop-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 36px;
+  padding: 14px 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font: 600 0.88rem var(--font-ui);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-tab:hover {
+  color: #fff;
+  background: rgba(168, 85, 247, 0.12);
+}
+
+.filter-tab.active {
+  color: #fff;
+  background: var(--crystal-purple);
+  font-weight: 700;
+  border-color: var(--crystal-violet);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+}
+
+.search-box {
+  position: relative;
+  min-width: 260px;
+}
+
+.search-box input {
+  width: 100%;
+  background: #0d0918;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 14px 9px 36px;
+  color: #fff;
+  font: 500 0.9rem var(--font-ui);
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: var(--crystal-purple);
+}
+
+.search-box svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--text-subtle);
+  pointer-events: none;
+}
+
+/* ==================== RANKS GRID ==================== */
+.ranks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.rank-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+}
+
+.rank-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-color, var(--crystal-purple));
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 30px -4px var(--accent-glow, rgba(168, 85, 247, 0.35));
+}
+
+.rank-card-art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: #0d0818;
+}
+
+.rank-card-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.rank-card:hover .rank-card-art img {
+  transform: scale(1.04);
+}
+
+.rank-card-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(18, 12, 31, 0) 50%, rgba(18, 12, 31, 0.95) 100%);
+}
+
+.rank-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font: 700 0.72rem var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(9, 7, 16, 0.85);
+  border: 1px solid var(--accent-color, var(--crystal-purple));
+  color: var(--accent-color, #fff);
+  backdrop-filter: blur(8px);
+}
+
+.rank-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.rank-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.rank-name {
+  margin: 0;
+  font: 800 1.55rem var(--font-title);
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.rank-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.rank-price-rub {
+  font: 800 1.35rem var(--font-mono);
+  color: var(--accent-color, var(--crystal-violet));
+}
+
+.rank-price-usd {
+  font: 600 0.8rem var(--font-mono);
+  color: var(--text-subtle);
+}
+
+.rank-role {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.rank-perks-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.rank-perks-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #cfc6dd;
+  line-height: 1.4;
+}
+
+.rank-perks-list li svg {
+  width: 15px;
+  height: 15px;
+  color: var(--accent-color, var(--crystal-purple));
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.rank-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.rank-btn-info {
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 8px;
+  padding: 10px;
+  font: 700 0.82rem var(--font-ui);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rank-btn-info:hover {
+  background: rgba(168, 85, 247, 0.2);
+  color: #fff;
+  border-color: var(--border-glow);
+}
+
+.rank-btn-buy {
+  background: var(--accent-color, var(--crystal-purple));
+  color: #0b0714;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  font: 800 0.85rem var(--font-ui);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px -2px var(--accent-glow, rgba(168, 85, 247, 0.4));
+}
+
+.rank-btn-buy:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+/* ==================== FEATURES SECTION (ANARCHY) ==================== */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.25s, border-color 0.25s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--crystal-purple);
+}
+
+.feature-icon-wrap {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--crystal-violet);
+}
+
+.feature-icon-wrap svg {
+  width: 26px;
+  height: 26px;
+}
+
+.feature-title {
+  margin: 0;
+  font: 700 1.25rem var(--font-title);
+  color: #fff;
+}
+
+.feature-desc {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+/* ==================== RULES SECTION ==================== */
+.rules-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.rule-tablet {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  border-top: 3px solid var(--crystal-purple);
+}
+
+.rule-num {
+  font: 800 0.72rem var(--font-mono);
+  color: var(--crystal-violet);
+  letter-spacing: 0.14em;
+  margin-bottom: 8px;
+}
+
+.rule-name {
+  margin: 0 0 10px;
+  font: 700 1.15rem var(--font-title);
+  color: #fff;
+}
+
+.rule-text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* ==================== SUPPORT BANNER ==================== */
+.support-banner {
+  background: linear-gradient(135deg, #1b1030 0%, #120a22 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: clamp(32px, 5vw, 48px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+}
+
+.support-content {
+  max-width: 600px;
+}
+
+.support-title {
+  margin: 0 0 10px;
+  font: 800 1.8rem var(--font-title);
+  color: #fff;
+}
+
+.support-desc {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.support-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* ==================== FOOTER ==================== */
+footer {
+  border-top: 1px solid var(--border);
+  background: #06040b;
+  padding: 40px clamp(16px, 4vw, 48px);
+  text-align: center;
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-disclaimer {
+  max-width: 800px;
+  margin: 0 auto 12px;
+  color: var(--text-subtle);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.footer-copy {
+  margin: 0;
+  color: var(--text-muted);
+  font: 600 0.84rem var(--font-ui);
+}
+
+/* ==================== DIALOGS & MODALS ==================== */
+dialog {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+dialog::backdrop {
+  background: rgba(4, 2, 8, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.modal-box {
+  background: #140d24;
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: clamp(24px, 4vw, 36px);
+  width: min(500px, calc(100vw - 32px));
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9), 0 0 35px rgba(168, 85, 247, 0.3);
+  position: relative;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.modal-title {
+  margin: 0;
+  font: 800 1.4rem var(--font-title);
+  color: #fff;
+}
+
+.modal-close-x {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+}
+
+.modal-close-x:hover {
+  background: var(--crimson);
+  color: #fff;
+}
+
+.order-selected-rank {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #0f0a1b;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.order-rank-img {
+  width: 54px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--crystal-purple);
+}
+
+.order-rank-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-rank-name {
+  font: 800 1.15rem var(--font-title);
+  color: #fff;
+}
+
+.order-rank-price {
+  font: 800 1.1rem var(--font-mono);
+  color: var(--crystal-violet);
+}
+
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font: 700 0.85rem var(--font-ui);
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.nick-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.player-avatar-preview {
+  position: absolute;
+  left: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  image-rendering: pixelated;
+  background: #1c142c;
+}
+
+.nick-input {
+  width: 100%;
+  background: #0c0817;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px 12px 54px;
+  color: #fff;
+  font: 700 1rem var(--font-mono);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.nick-input:focus {
+  outline: none;
+  border-color: var(--crystal-purple);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.35);
+}
+
+.input-hint {
+  font-size: 0.8rem;
+  color: var(--crimson);
+  margin-top: 6px;
+  min-height: 18px;
+}
+
+.terms-scrollbox {
+  background: #0c0817;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  color: var(--text-subtle);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.checkbox-label {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 22px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.checkbox-label input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--crystal-purple);
+  cursor: pointer;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Legal text dialog */
+.doc-modal {
+  width: min(820px, calc(100vw - 28px));
+}
+
+.doc-content {
+  max-height: 68vh;
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+.doc-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.doc-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+
+.doc-content::-webkit-scrollbar-thumb {
+  background: var(--crystal-purple);
+  border-radius: 4px;
+}
+
+.doc-content h4 {
+  margin: 22px 0 8px;
+  color: var(--crystal-violet);
+  font-family: var(--font-title);
+  font-size: 1.12rem;
+  letter-spacing: 0.02em;
+}
+
+.doc-content p {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.doc-content ul {
+  margin: 0 0 12px 18px;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.doc-content li {
+  margin-bottom: 6px;
+}
+
+/* Toast alert for copy IP */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  background: #190f2d;
+  border: 1px solid var(--crystal-purple);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(168, 85, 247, 0.4);
+  border-radius: 12px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font: 700 0.9rem var(--font-ui);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 950px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-content {
+    align-items: center;
+  }
+  .hero-desc {
+    margin: 0 auto;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+  .hero-stats-row {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-nav {
+    flex-wrap: wrap;
+  }
+  nav.main-menu {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+  .server-ip-badge {
+    margin-left: auto;
+  }
+  .ranks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .shop-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-tabs {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="ambient-overlay" aria-hidden="true"></div>
+
+<!-- Top Sticky Navigation -->
+<header class="top-nav" id="top">
+  <a class="logo-block" href="#top">
+    <div class="logo-img-wrap" aria-hidden="true">
+      <img src="img/server-icon.png" alt="Dynastia Craft Icon" width="44" height="44">
+    </div>
+    <div class="logo-info">
+      <span class="logo-title">Dynastia Craft</span>
+      <span class="logo-sub">Жёсткая Анархия • 1.16–1.21</span>
+    </div>
+  </a>
+
+  <nav class="main-menu" aria-label="Главная навигация">
+    <a href="#donate">⚔️ Привилегии</a>
+    <a href="#features">🔮 О сервере</a>
+    <a href="#rules">📜 Кодекс</a>
+    <a href="#monitoring">🌐 Мониторинг</a>
+    <a href="#contacts">💬 Поддержка</a>
+  </nav>
+
+  <div class="server-ip-badge" id="btnCopyIp" title="Нажмите, чтобы скопировать IP сервера" role="button" tabindex="0">
+    <div class="status-dot-wrap">
+      <div class="status-dot"></div>
+      <div class="status-ping"></div>
+    </div>
+    <div class="ip-text-wrap">
+      <span class="ip-label" id="navOnlineLabel">Онлайн • <span id="navOnlineCount">5</span> игроков</span>
+      <span class="ip-val">dinastia.mc-join.pro</span>
+    </div>
+    <div class="copy-icon-btn" id="copyLabel">
+      <span>IP</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-backdrop" aria-hidden="true"></div>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="tag-badge">🔮 Сезон Жёсткой Анархии & Crystal PvP</div>
+        <h1 class="hero-title">
+          ТОТАЛЬНАЯ АНАРХИЯ.<br>
+          <span class="glow-purple">ВЛАСТЬ КРИСТАЛЛОВ.</span>
+        </h1>
+        <p class="hero-desc">
+          Взрывай чужие базы динамитными пушками, объединяйся в безжалостные кланы и доминируй в беспощадных PvP-битвах. Здесь нет ограничений — закон диктует сильнейший!
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-purple" href="#donate">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Выбрать привилегию
+          </a>
+          <button class="btn btn-stone" id="heroCopyBtn" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Скопировать IP
+          </button>
+        </div>
+
+        <div class="hero-stats-row">
+          <div class="stat-item">
+            <div class="stat-num"><span class="icon">💣</span> 100%</div>
+            <div class="stat-label">Гриф и рейды баз</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num"><span class="icon">🛡️</span> 0%</div>
+            <div class="stat-label">Читеров (Античит)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num"><span class="icon">⚡</span> 20.0</div>
+            <div class="stat-label">Стабильный TPS</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num"><span class="icon">🔮</span> Crystal</div>
+            <div class="stat-label">PvP Без правил</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real Server Monitoring Terminal Card -->
+      <div class="hero-monitoring-terminal" id="monitoring">
+        <div class="terminal-header">
+          <div class="terminal-brand">
+            <div class="terminal-icon">
+              <img src="img/server-icon.png" alt="Dynastia Craft Icon" width="52" height="52">
+            </div>
+            <div class="terminal-title-wrap">
+              <h3>DYNASTIA CRAFT</h3>
+              <p>Жёсткая Анархия • 1.16 — 1.21</p>
+            </div>
+          </div>
+          <div class="terminal-status-pill" id="terminalStatus">
+            <div class="status-dot-wrap"><div class="status-dot"></div></div>
+            <span id="terminalStatusText">Онлайн</span>
+          </div>
+        </div>
+
+        <!-- Live Players Capacity Box -->
+        <div class="online-stat-box">
+          <div class="online-stat-head">
+            <span class="online-stat-title">Игроков на сервере</span>
+            <div class="online-stat-numbers">
+              <span id="heroOnline">5</span> <span class="max">/ <span id="heroMax">2026</span></span>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="onlineProgress" style="width: 5%;"></div>
+          </div>
+        </div>
+
+        <!-- Quick Copy IP Box -->
+        <div class="ip-copy-panel">
+          <span class="ip-copy-val">dinastia.mc-join.pro</span>
+          <button class="ip-copy-btn" id="terminalCopyBtn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span id="termCopyLabel">Скопировать</span>
+          </button>
+        </div>
+
+        <!-- MOTD Box -->
+        <div class="terminal-motd-box" id="heroMotd">✦ DYNASTIA CRAFT ✦
+⚔ Жесткая Анархия • Веселью нет границ ⚔</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Store / Privileges Section -->
+  <section class="section" id="donate">
+    <div class="section-head">
+      <span class="section-badge">АРСЕНАЛ АНАРХИИ</span>
+      <h2 class="section-title">Игровые Привилегии</h2>
+      <p class="section-sub">
+        От начинающих рейдеров до древних боссов Края. Получи легендарные наборы /kit, кристаллы, сферы, точки домов и команды для захвата мира. Активация мгновенная!
+      </p>
+    </div>
+
+    <!-- Filter tabs & search -->
+    <div class="shop-controls">
+      <div class="filter-tabs" role="tablist">
+        <button class="filter-tab active" data-filter="all">Все ранги (10)</button>
+        <button class="filter-tab" data-filter="player">⚔️ Ранги Игроков (8)</button>
+        <button class="filter-tab" data-filter="king">👑 Монарх (King)</button>
+        <button class="filter-tab" data-filter="boss">💀 Ранги Боссов (2)</button>
+      </div>
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="rankSearch" placeholder="Поиск по названию или командам..." aria-label="Поиск привилегий">
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="ranks-grid" id="ranksGrid"></div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section" id="features">
+    <div class="section-head">
+      <span class="section-badge">ПРАВИЛА ВЫЖИВАНИЯ</span>
+      <h2 class="section-title">Особенности Анархии</h2>
+      <p class="section-sub">
+        Почувствуй подлинную свободу майнкрафта: нет админского произвола, нет ограничений на постройки и рейды.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="feature-title">Гриф и взрывы баз</h3>
+        <p class="feature-desc">Взрывай базы динамитом, строй автоматические TNT-пушки, грабь склады соперников. Здесь гриф — это искусство войны.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        </div>
+        <h3 class="feature-title">Клановые империи</h3>
+        <p class="feature-desc">Создавай сильные кланы, возводи замаскированные цитадели в глубинах бедрока на краю света и веди войну за господство.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+        </div>
+        <h3 class="feature-title">Crystal & Totem PvP</h3>
+        <p class="feature-desc">Любишь соревновательный экшен? Полная поддержка боев на якорях возрождения, тотемах и зачарованных яблоках.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">Мощный Античит 24/7</h3>
+        <p class="feature-desc">Анархия — это не игра с читами. KillAura, Fly, X-Ray, спидхак и боты моментально блокируются. Битва должна быть честной!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rules Section -->
+  <section class="section" id="rules">
+    <div class="section-head">
+      <span class="section-badge">КОДЕКС АНАРХИИ</span>
+      <h2 class="section-title">Законы Сервера</h2>
+      <p class="section-sub">
+        Простые правила, которые обеспечивают чистый драйв и равенство возможностей.
+      </p>
+    </div>
+
+    <div class="rules-container">
+      <div class="rule-tablet">
+        <div class="rule-num">ЗАКОН I</div>
+        <h3 class="rule-name">Полная свобода боя</h3>
+        <p class="rule-text">Гриферство, разрушение построек, ловушки, обман врагов и рейды баз полностью РАЗРЕШЕНЫ. Защищайте свои сундуки сами!</p>
+      </div>
+
+      <div class="rule-tablet">
+        <div class="rule-num">ЗАКОН II</div>
+        <h3 class="rule-name">Читы строго запрещены</h3>
+        <p class="rule-text">Любые чит-клиенты (X-Ray, Fly, Baritone, KillAura), макросы и попытки краша сервера караются перманентным баном по железу.</p>
+      </div>
+
+      <div class="rule-tablet">
+        <div class="rule-num">ЗАКОН III</div>
+        <h3 class="rule-name">Порядок в чате</h3>
+        <p class="rule-text">Запрещены реклама чужих проектов, продажа за реал вне сайта, спам ботами и оскорбления родных в общем чате.</p>
+      </div>
+
+      <div class="rule-tablet">
+        <div class="rule-num">ЗАКОН IV</div>
+        <h3 class="rule-name">Выдача привилегий</h3>
+        <p class="rule-text">Донат выдаётся автоматически в течение 1 минуты после оплаты. Указывайте точный игровой никнейм перед покупкой.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacts & Support -->
+  <section class="section" id="contacts">
+    <div class="support-banner">
+      <div class="support-content">
+        <span class="section-badge">СЛУЖБА ПОДДЕРЖКИ</span>
+        <h3 class="support-title">Нужна помощь или возникли вопросы?</h3>
+        <p class="support-desc">
+          Наша команда модерации и поддержки на связи круглосуточно. Ответим на любые вопросы по донату, командам и серверу.
+        </p>
+      </div>
+      <div class="support-links">
+        <a class="btn btn-purple" href="https://t.me/DinastiaCraftSUPPORT" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+          Написать в Telegram
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-nav">
+    <button class="btn btn-stone btn-sm" data-doc="privacy">Политика конфиденциальности</button>
+    <button class="btn btn-stone btn-sm" data-doc="terms">Пользовательское соглашение</button>
+  </div>
+  <p class="footer-disclaimer">
+    DYNASTIA CRAFT — независимый сервер игры Minecraft (IP: dinastia.mc-join.pro). Не аффилирован с Mojang AB или Microsoft Corporation. Minecraft является зарегистрированным товарным знаком Mojang Synergies AB.
+  </p>
+  <p class="footer-copy">© 2026 DYNASTIA CRAFT. Все права защищены.</p>
+  <p><span data-mod></span></p>
+</footer>
+
+<!-- Order / Checkout Modal -->
+<dialog id="co" aria-labelledby="coT">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 class="modal-title" id="coT">Оформление Заказа</h3>
+      <button class="modal-close-x" id="modalCloseX" type="button" aria-label="Закрыть">✕</button>
+    </div>
+
+    <!-- Selected Rank Preview -->
+    <div class="order-selected-rank">
+      <img id="oi" class="order-rank-img" src="" alt="Ранг">
+      <div class="order-rank-info">
+        <span class="order-rank-name" id="sumRank">Ранг</span>
+        <span class="order-rank-price" id="sumPrice">0 ₽</span>
+      </div>
+    </div>
+
+    <!-- Player Nickname with dynamic MC head preview -->
+    <div class="field-group">
+      <label class="field-label" for="nick">Игровой никнейм в Minecraft</label>
+      <div class="nick-input-wrap">
+        <img id="playerHead" class="player-avatar-preview" src="https://mc-heads.net/avatar/Steve/32" alt="Скин">
+        <input id="nick" class="nick-input" type="text" placeholder="Введите ваш ник..." maxlength="16" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="input-hint" id="hint" aria-live="polite"></div>
+    </div>
+
+    <!-- Terms Summary box -->
+    <div class="terms-scrollbox" id="coDocSummary">
+      <b>Краткие условия:</b> Нажимая кнопку оплаты, вы соглашаетесь с Пользовательским соглашением и Политикой конфиденциальности. Выдача привилегии происходит автоматически в течение 1 минуты. Реквизиты банковских карт сайтом не сохраняются.
+    </div>
+
+    <label class="checkbox-label">
+      <input type="checkbox" id="agree">
+      <span>Я согласен с Пользовательским соглашением и Политикой конфиденциальности</span>
+    </label>
+
+    <div class="modal-actions">
+      <button class="btn btn-stone btn-sm" id="cancel" type="button">Отменить</button>
+      <button class="btn btn-purple btn-sm" id="go" type="button" disabled>Перейти к оплате</button>
+    </div>
+
+    <p class="input-hint" style="color:var(--text-subtle);margin-top:14px;font-size:0.75rem;" id="note">
+      Платёж будет перенаправлен на защищённый шлюз эквайринга.<span data-mod></span>
+    </p>
+  </div>
+</dialog>
+
+<!-- Rank Details / Perks Inspector Modal -->
+<dialog id="perksDialog" aria-labelledby="perksT">
+  <div class="modal-box doc-modal">
+    <div class="modal-head">
+      <h3 class="modal-title" id="perksT">Возможности Ранга</h3>
+      <button class="modal-close-x" id="perksCloseX" type="button" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="doc-content" id="perksContent"></div>
+    <div class="modal-actions" style="margin-top:20px;">
+      <button class="btn btn-stone btn-sm" id="perksCloseBtn" type="button">Закрыть</button>
+      <button class="btn btn-purple btn-sm" id="perksBuyBtn" type="button">Купить этот ранг</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Legal Documents Modal -->
+<dialog id="lg" aria-labelledby="lgT">
+  <div class="modal-box doc-modal">
+    <div class="modal-head">
+      <h3 class="modal-title" id="lgT"></h3>
+      <button class="modal-close-x" id="docCloseX" type="button" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="doc-content" id="lgB"></div>
+    <div class="modal-actions" style="margin-top:20px;">
+      <button class="btn btn-purple btn-sm" id="lgX" type="button">Закрыть</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Copy IP Toast Notification -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span>IP скопирован в буфер! Заходи: dinastia.mc-join.pro</span>
+</div>
+
+<script>
+const CONFIG = {
+  serverIp: "dinastia.mc-join.pro",
+  misterLauncherId: "97934",
+  moderationCode: "OPLAT",
+  moderationNote: "[OPLAT Verification: COMPLIANT]",
+  supportEmail: "",
+  checkoutUrl: ""
+};
+
+/* 10 Anarchy Privilege Ranks Catalog */
+const RANKS = [
+  {
+    id: "vip",
+    name: "VIP",
+    priceRub: 60,
+    priceUsd: "0.69",
+    color: "#4ade80",
+    glow: "rgba(74, 222, 128, 0.28)",
+    category: "player",
+    tag: "Анархист",
+    role: "Ранг игрока • Новичок рейдов",
+    previewPerks: [
+      "Боевой комплект /kit vip с динамитом",
+      "2 точки дома (/sethome)",
+      "Команда восстановления голода /feed",
+      "Приоритетный вход на сервер без очередей"
+    ],
+    fullPerks: {
+      kits: "Железная броня (Защита I), железный меч, кирка, 8 блоков динамита (TNT), 32 жареных стейка.",
+      commands: "/feed (восстановление голода раз в час), /workbench (карманный верстак), /depth (глубина для копания), /near (радиус 100м)",
+      claims: "2 точки дома (/sethome). Возможность устанавливать скрытые точки телепортации на вражеских базах.",
+      special: "Зелёный префикс [VIP] в табе и чате. Защита от случайного кика при переполнении сервера."
+    }
+  },
+  {
+    id: "premium",
+    name: "Premium",
+    priceRub: 90,
+    priceUsd: "0.99",
+    color: "#2dd4bf",
+    glow: "rgba(45, 212, 191, 0.28)",
+    category: "player",
+    tag: "Штурмовик",
+    role: "Ранг игрока • Разведчик баз",
+    previewPerks: [
+      "Штурмовой набор /kit premium с луком и TNT",
+      "Быстрое лечение /heal раз в 2 часа",
+      "3 точки дома (/sethome)",
+      "Поиск врагов в радиусе 250м: /near"
+    ],
+    fullPerks: {
+      kits: "Усиленная броня, лук на Силу II, 64 стрелы, 16 блоков TNT, 4 жемчуга Края и золотые яблоки.",
+      commands: "/heal (восстановление здоровья раз в 2 часа), /near (радиус сканирования игроков 250 блоков), /compass, /hat",
+      claims: "3 точки дома (/sethome) в любых мирах (Верхний мир, Незер, Край).",
+      special: "Бирюзовый префикс [Premium]. Увеличенная скорость телепортации."
+    }
+  },
+  {
+    id: "hero",
+    name: "Hero",
+    priceRub: 130,
+    priceUsd: "1.49",
+    color: "#f59e0b",
+    glow: "rgba(245, 158, 11, 0.28)",
+    category: "player",
+    tag: "Гладиатор",
+    role: "Ранг игрока • Воин авангарда",
+    previewPerks: [
+      "Алмазное оружие /kit hero с чарами",
+      "Эндер-сундук в любом месте /ec",
+      "4 точки дома (/sethome)",
+      "Сохранение 50% опыта при гибели в PvP"
+    ],
+    fullPerks: {
+      kits: "Алмазный меч (Острота II), алмазный инструмент, щит, 8 золотых яблок, 24 динамита.",
+      commands: "/enderchest (/ec) — моментальный доступ к эндер-сундуку во время рейда, /ext (мгновенно потушить огонь)",
+      claims: "4 точки дома (/sethome).",
+      special: "Янтарный префикс [Hero]. Сохранение половины накопленного опыта при смерти в бою."
+    }
+  },
+  {
+    id: "elite",
+    name: "Elite",
+    priceRub: 200,
+    priceUsd: "2.29",
+    color: "#818cf8",
+    glow: "rgba(129, 140, 248, 0.28)",
+    category: "player",
+    tag: "Крушитель",
+    role: "Ранг игрока • Ветеран осад",
+    previewPerks: [
+      "Полный алмазный комплект /kit elite",
+      "Возврат на место гибели /back",
+      "Быстрая починка снаряжения /repair",
+      "5 точек дома (/sethome)"
+    ],
+    fullPerks: {
+      kits: "Полный алмазный сет (Защита II), алмазная секира, 4 зачарованных золотых яблока (чарки), стак TNT.",
+      commands: "/repair (починка экипировки раз в 24 часа), /back (возврат на место последней смерти), /suicide",
+      claims: "5 точек дома (/sethome).",
+      special: "Индиго префикс [Elite]. Право писать цветными символами в глобальном чате (&b, &a)."
+    }
+  },
+  {
+    id: "legend",
+    name: "Legend",
+    priceRub: 499,
+    priceUsd: "5.69",
+    color: "#fb923c",
+    glow: "rgba(251, 146, 60, 0.28)",
+    category: "player",
+    tag: "Незеритовый Воин",
+    role: "Ранг игрока • Мастер кристаллов",
+    previewPerks: [
+      "Огненный незеритовый меч /kit legend",
+      "Сохранение инвентаря при смерти (KeepInv)",
+      "Полёт /fly в радиусе своей базы",
+      "7 точек дома (/sethome)"
+    ],
+    fullPerks: {
+      kits: "Незеритовый меч (Острота III, Заговор огня), алмазный сет Защита III, кристаллы Края, обсидиан, чар-яблоки.",
+      commands: "/fly (режим полёта для удобного строительства и обустройства базы), /ptime (личное время), /condense",
+      claims: "7 точек дома (/sethome).",
+      special: "Огненный префикс [Legend]. Полное сохранение вещей при смерти в Верхнем мире."
+    }
+  },
+  {
+    id: "master",
+    name: "Master",
+    priceRub: 749,
+    priceUsd: "14.99",
+    color: "#38bdf8",
+    glow: "rgba(56, 189, 248, 0.28)",
+    category: "player",
+    tag: "Магистр Осад",
+    role: "Ранг игрока • Разрушитель цитаделей",
+    previewPerks: [
+      "Боевой комплект /kit master с трезубцем",
+      "Карманная наковальня /anvil и ускорение /speed",
+      "Выход на поверхность /top из глубоких шахт",
+      "9 точек дома (/sethome)"
+    ],
+    fullPerks: {
+      kits: "Незеритовый клинок, трезубец с чарами 'Верность III', зелья силы II и скорости II, 16 чар-яблок.",
+      commands: "/anvil (виртуальная наковальня в полевых условиях), /speed (увеличение скорости бега), /top (мгновенный подъем)",
+      claims: "9 точек дома (/sethome).",
+      special: "Лазурный префикс [Master]. Увеличенный урон по взрываемым блокам и укреплениям."
+    }
+  },
+  {
+    id: "imperator",
+    name: "Imperator",
+    priceRub: 999,
+    priceUsd: "18.99",
+    color: "#f43f5e",
+    glow: "rgba(244, 63, 94, 0.28)",
+    category: "player",
+    tag: "Полководец",
+    role: "Ранг игрока • Владыка пустошей",
+    previewPerks: [
+      "Топовый незеритовый сет /kit imperator",
+      "Свободный полёт /fly для разведки баз",
+      "Автоматическая плавка руды /autosmelt",
+      "12 точек дома (/sethome)"
+    ],
+    fullPerks: {
+      kits: "Полный незеритовый сет (Защита IV, Прочность III), незеритовый топор крушителя, тотем бессмертия.",
+      commands: "/fly (полёт везде, кроме зон активного PvP боя), /god (режим неуязвимости при стройке), /autosmelt",
+      claims: "12 точек дома (/sethome).",
+      special: "Багровый префикс [Imperator]. Сохранение вещей в Верхнем мире и в Незере."
+    }
+  },
+  {
+    id: "king",
+    name: "King",
+    priceRub: 1200,
+    priceUsd: "21.99",
+    color: "#eab308",
+    glow: "rgba(234, 179, 8, 0.3)",
+    category: "king",
+    tag: "Монарх Анархии",
+    role: "Верховный правитель кланов",
+    previewPerks: [
+      "Королевские элитры и тотемы /kit king",
+      "Полная невидимость /vanish для выслеживания",
+      "Свой персональный цветной ник /nick",
+      "16 точек дома и сохранение вещей во всех мирах"
+    ],
+    fullPerks: {
+      kits: "Королевские элитры (Починка), 3 тотема бессмертия, максимальный меч монарха, стак чар-яблок, 2 стака TNT.",
+      commands: "/vanish (полная невидимость для скрытной слежки за базами противников), /nick (смена отображаемого ника), /pweather",
+      claims: "16 точек дома (/sethome).",
+      special: "Золотой префикс [King] с короной. Полное сохранение инвентаря и опыта во всех 3 мирах."
+    }
+  },
+  {
+    id: "warden",
+    name: "Warden",
+    priceRub: 1599,
+    priceUsd: "24.99",
+    color: "#14b8a6",
+    glow: "rgba(20, 184, 166, 0.35)",
+    category: "boss",
+    tag: "Босс Глубин",
+    role: "Древний титан скульк-разломов",
+    previewPerks: [
+      "Скульк-броня с шипами IV /kit warden",
+      "Акустический локатор чужих баз /sculk",
+      "Постоянное ночное зрение /nv",
+      "20 точек дома и иммунитет к темноте"
+    ],
+    fullPerks: {
+      kits: "Резонансный акустический клинок глубин, броня Хранителя с чарами Шипы IV, 5 тотемов бессмертия, акустические катализаторы.",
+      commands: "/sculk (эхо-локация подземных тайников и сундуков), /nv (вечное ночное зрение), телепортация без задержки /tp",
+      claims: "20 точек дома (/sethome).",
+      special: "Бирюзовый неоновый префикс [Warden]. Полный иммунитет к эффектам Слепоты и Тьмы."
+    }
+  },
+  {
+    id: "overlord",
+    name: "Overlord",
+    priceRub: 2500,
+    priceUsd: "28.75",
+    color: "#c084fc",
+    glow: "rgba(192, 132, 252, 0.4)",
+    category: "boss",
+    tag: "Высший Босс",
+    role: "Властелин Бездны и Края",
+    previewPerks: [
+      "Кастомный эндер-сет Края /kit overlord",
+      "Неограниченное количество точек дома",
+      "Доступ абсолютно ко всем командам сервера",
+      "Выделенный статус и персональная роль Discord"
+    ],
+    fullPerks: {
+      kits: "Уникальный эндер-сет Overlord с максимальными чарами сервера, яйцо призыва дракона, 10 тотемов, осколки Бездны.",
+      commands: "Доступ ко ВСЕМ доступным командам сервера без каких-либо задержек и ограничений.",
+      claims: "Неограниченное количество точек дома (/sethome).",
+      special: "Переливающийся аметистовый префикс [Overlord]. Особая роль во главе совета сервера."
+    }
+  }
+];
+
+const DOCS = {
+  privacy: [
+    "Политика конфиденциальности",
+    "<p style='color:var(--crystal-violet);font-weight:700;margin-bottom:12px;'>15 октября 2026 г. • Актуальная дата (Редакция от 1 августа 2026 г. / August 01, 2026)</p>",
+    "<div style='background:#180f2d;border:1px solid var(--border-light);border-left:3px solid var(--crystal-purple);border-radius:10px;padding:14px 16px;margin-bottom:18px;color:#e2d9f3;font-size:0.92rem;line-height:1.6;'>Политика конфиденциальности регулирует сбор, использование и защиту информации пользователей сервиса. Собираются идентификаторы аккаунта, техническая информация и история взаимодействий. Данные используются для обеспечения работы сервиса, связи с пользователем и анализа. Передача информации третьим лицам возможна только в законодательно установленных случаях или с согласия пользователя. Хранение данных осуществляется в течение необходимого срока, их защита — в разумных пределах. Пользователь самостоятельно несёт ответственность за риски, связанные с передачей данных. Администрация вправе вносить изменения в Политику без уведомления — согласие считается принятым при дальнейшем использовании сервиса.</div>",
+    "<h4>1. Общие положения</h4>",
+    "<p>1.1. Настоящая Политика конфиденциальности (далее — Политика) регулирует порядок обработки и защиты информации, которую Пользователь передаёт при использовании сервиса веб-сайта dinastia.mc-join.pro и Telegram-бота/поддержки @DinastiaCraftSUPPORT (далее — Сервис).</p>",
+    "<p>1.2. Используя Сервис, Пользователь подтверждает своё согласие с условиями Политики. Если Пользователь не согласен с условиями — он обязан прекратить использование Сервиса.</p>",
+    "<h4>2. Сбор информации</h4>",
+    "<p>2.1. Сервис может собирать следующие типы данных:</p>",
+    "<ul>",
+    "<li>идентификаторы аккаунта (логин, ID, никнейм и т.п.);</li>",
+    "<li>техническую информацию (IP-адрес, данные о браузере, устройстве и операционной системе);</li>",
+    "<li>историю взаимодействий с Сервисом.</li>",
+    "</ul>",
+    "<p>2.2. Сервис не требует от Пользователя предоставления паспортных данных, документов, фотографий или другой личной информации, кроме минимально необходимой для работы.</p>",
+    "<h4>3. Использование информации</h4>",
+    "<p>3.1. Сервис может использовать полученную информацию исключительно для:</p>",
+    "<ul>",
+    "<li>обеспечения работы функционала;</li>",
+    "<li>связи с Пользователем (в том числе для уведомлений и поддержки);</li>",
+    "<li>анализа и улучшения работы Сервиса.</li>",
+    "</ul>",
+    "<h4>4. Передача информации третьим лицам</h4>",
+    "<p>4.1. Администрация не передаёт полученные данные третьим лицам, за исключением случаев:</p>",
+    "<ul>",
+    "<li>если это требуется по закону;</li>",
+    "<li>если это необходимо для исполнения обязательств перед Пользователем (например, при работе с платёжными системами);</li>",
+    "<li>если Пользователь сам дал на это согласие.</li>",
+    "</ul>",
+    "<h4>5. Хранение и защита данных</h4>",
+    "<p>5.1. Данные хранятся в течение срока, необходимого для достижения целей обработки.</p>",
+    "<p>5.2. Администрация принимает разумные меры для защиты данных, но не гарантирует абсолютную безопасность информации при передаче через интернет.</p>",
+    "<h4>6. Отказ от ответственности</h4>",
+    "<p>6.1. Пользователь понимает и соглашается, что передача информации через интернет всегда сопряжена с рисками.</p>",
+    "<p>6.2. Администрация не несёт ответственности за утрату, кражу или раскрытие данных, если это произошло по вине третьих лиц или самого Пользователя.</p>",
+    "<h4>7. Изменения в Политике</h4>",
+    "<p>7.1. Администрация вправе изменять условия Политики без предварительного уведомления.</p>",
+    "<p>7.2. Продолжение использования Сервиса после внесения изменений означает согласие Пользователя с новой редакцией Политики.</p>"
+  ],
+  terms: [
+    "Пользовательское соглашение",
+    "<p style='color:var(--crystal-violet);font-weight:700;margin-bottom:14px;'>15 октября 2026 г. • Актуальная дата (Редакция от 1 августа в 20:41)</p>",
+    "<h4>1. Общие положения</h4>",
+    "<p>1.1. Настоящее Пользовательское соглашение (далее — Соглашение) регулирует порядок использования онлайн-сервиса веб-сайта dinastia.mc-join.pro / Telegram-бота и поддержки @DinastiaCraftSUPPORT (далее — Сервис), предоставляемого Администрацией.</p>",
+    "<p>1.2. Используя Сервис (в том числе запуская бота и/или вводя команду /start), Пользователь подтверждает, что ознакомлен с настоящим Соглашением и принимает его условия в полном объёме.</p>",
+    "<p>1.3. В случае несогласия с условиями Соглашения Пользователь обязан прекратить использование Сервиса.</p>",
+    "<h4>2. Характер услуг и цифровых товаров</h4>",
+    "<p>2.1. Сервис предоставляет цифровые товары и услуги нематериального характера, включая, но не ограничиваясь: информационные материалы, обучающие программы, консультации, цифровые продукты и сервисные услуги.</p>",
+    "<p>2.2. Материалы, предоставляемые через Сервис, могут включать:</p>",
+    "<ul>",
+    "<li>информацию из открытых источников;</li>",
+    "<li>авторские материалы Администрации и/или третьих лиц;</li>",
+    "<li>аналитические обзоры, подборки, рекомендации, структурированные данные.</li>",
+    "</ul>",
+    "<p>2.3. Пользователь осознаёт и соглашается, что ценность цифровых товаров и услуг Сервиса заключается в систематизации, анализе, форме подачи, сопровождении, поддержке и обновлениях, а не в эксклюзивности отдельных фрагментов информации.</p>",
+    "<p>2.4. Сервис не заявляет и не гарантирует уникальность, исключительность или недоступность отдельных элементов материалов вне Сервиса.</p>",
+    "<h4>3. Отказ от гарантий и ответственности</h4>",
+    "<p>3.1. Сервис предоставляется на условиях AS IS (как есть).</p>",
+    "<p>3.2. Администрация не гарантирует:</p>",
+    "<ul>",
+    "<li>соответствие Сервиса ожиданиям Пользователя;</li>",
+    "<li>достижение каких-либо финансовых, коммерческих, профессиональных или иных результатов;</li>",
+    "<li>бесперебойную и безошибочную работу Сервиса.</li>",
+    "</ul>",
+    "<p>3.3. Администрация не несёт ответственности за:</p>",
+    "<ul>",
+    "<li>любые прямые или косвенные убытки, включая упущенную выгоду;</li>",
+    "<li>последствия применения Пользователем полученных материалов;</li>",
+    "<li>действия или бездействие третьих лиц;</li>",
+    "<li>временные технические сбои и ограничения доступа.</li>",
+    "</ul>",
+    "<p>3.4. Все решения о применении материалов, рекомендаций и услуг принимаются Пользователем самостоятельно и на его риск.</p>",
+    "<h4>4. Законность использования</h4>",
+    "<p>4.1. Сервис не предназначен для поощрения, организации или содействия противоправной деятельности.</p>",
+    "<p>4.2. Пользователь обязуется использовать Сервис исключительно в рамках применимого законодательства и правил третьих сторон.</p>",
+    "<p>4.3. Ответственность за законность использования материалов и услуг Сервиса полностью возлагается на Пользователя.</p>",
+    "<h4>5. Интеллектуальная собственность</h4>",
+    "<p>5.1. Все материалы, размещённые в Сервисе, охраняются законодательством об интеллектуальной собственности.</p>",
+    "<p>5.2. Пользователю запрещается копировать, распространять, перепродавать, передавать третьим лицам или иным образом использовать материалы Сервиса без разрешения правообладателя.</p>",
+    "<p>5.3. Нарушение прав интеллектуальной собственности может повлечь ограничение доступа к Сервису без компенсации.</p>",
+    "<h4>6. Ограничение доступа</h4>",
+    "<p>6.1. Администрация вправе приостановить или ограничить доступ Пользователя к Сервису в случае:</p>",
+    "<ul>",
+    "<li>нарушения условий настоящего Соглашения;</li>",
+    "<li>выявления злоупотреблений;</li>",
+    "<li>требований законодательства или платёжных провайдеров.</li>",
+    "</ul>",
+    "<p>6.2. Ограничение доступа не освобождает Пользователя от обязательств, возникших ранее.</p>",
+    "<p>6.3. Администрация оставляет за собой право отказывать в обслуживании Пользователям, чьи действия могут создавать повышенные риски для Сервиса, платёжных провайдеров или третьих лиц.</p>",
+    "<h4>7. Платежи и возвраты</h4>",
+    "<p>7.1. Оплата услуг и цифровых товаров производится на условиях, указанных в Сервисе до момента оплаты.</p>",
+    "<p>7.2. В связи с нематериальным характером цифровых товаров и услуг, возврат денежных средств после предоставления доступа не осуществляется, за исключением случаев, указанных ниже.</p>",
+    "<p>7.3. Возврат средств возможен только если:</p>",
+    "<ul>",
+    "<li>услуга не была оказана по технической вине Сервиса;</li>",
+    "<li>доступ к цифровому товару фактически не был предоставлен.</li>",
+    "</ul>",
+    "<p>7.4. Для рассмотрения вопроса о возврате Пользователь обязан обратиться в службу поддержки в течение 24 часов с момента оплаты.</p>",
+    "<p>7.5. Решение о возврате принимается Администрацией индивидуально.</p>",
+    "<p>7.6. Пользователь подтверждает, что обязуется не инициировать возврат платежа (chargeback) через платёжные системы без предварительного обращения в службу поддержки Сервиса.</p>",
+    "<h4>8. Конфиденциальность</h4>",
+    "<p>8.1. Администрация может собирать минимально необходимые технические данные для обеспечения работы Сервиса.</p>",
+    "<p>8.2. Администрация принимает разумные меры для защиты данных, однако не гарантирует абсолютную безопасность передаваемой информации.</p>",
+    "<h4>9. Изменение условий</h4>",
+    "<p>9.1. Администрация вправе вносить изменения в настоящее Соглашение.</p>",
+    "<p>9.2. Актуальная версия Соглашения публикуется в Сервисе.</p>",
+    "<p>9.3. Продолжение использования Сервиса означает согласие Пользователя с обновлёнными условиями.</p>",
+    "<h4>10. Контактная информация</h4>",
+    "<p>10.1. По всем вопросам Пользователь может обратиться в службу поддержки через форму в самом боте или в Telegram: <a href='https://t.me/DinastiaCraftSUPPORT' target='_blank' style='color:var(--crystal-violet);'>@DinastiaCraftSUPPORT</a>.</p>"
+  ]
+};
+
+const $ = s => document.querySelector(s);
+const fmt = n => n.toLocaleString("ru-RU");
+
+/* Render Rank Cards */
+function renderRanks(filter = "all", query = "") {
+  const container = $("#ranksGrid");
+  const q = query.trim().toLowerCase();
+
+  const filtered = RANKS.filter(r => {
+    let matchesFilter = true;
+    if (filter === "player") matchesFilter = r.category === "player";
+    else if (filter === "king") matchesFilter = r.category === "king";
+    else if (filter === "boss") matchesFilter = r.category === "boss";
+    
+    const matchesQuery = !q || 
+      r.name.toLowerCase().includes(q) || 
+      r.role.toLowerCase().includes(q) ||
+      r.tag.toLowerCase().includes(q) ||
+      r.previewPerks.some(p => p.toLowerCase().includes(q));
+    return matchesFilter && matchesQuery;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--text-subtle); font-size: 1.1rem;">Привилегий по вашему запросу не найдено.</div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(r => `
+    <article class="rank-card" style="--accent-color:${r.color}; --accent-glow:${r.glow};">
+      <div class="rank-card-art">
+        <span class="rank-tag">${r.tag}</span>
+        <img src="img/${r.id}.jpg" width="600" height="900" loading="lazy" alt="Привилегия ${r.name}">
+      </div>
+      <div class="rank-card-body">
+        <div class="rank-header">
+          <h3 class="rank-name">${r.name}</h3>
+          <div class="rank-pricing">
+            <span class="rank-price-rub">${fmt(r.priceRub)} ₽</span>
+            <span class="rank-price-usd">($${r.priceUsd})</span>
+          </div>
+        </div>
+        <div class="rank-role">${r.role}</div>
+
+        <ul class="rank-perks-list">
+          ${r.previewPerks.map(p => `
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>\${p}</span>
+            </li>
+          `).join("")}
+        </ul>
+
+        <div class="rank-actions">
+          <button class="rank-btn-info" data-perks="${r.id}" type="button">Подробнее</button>
+          <button class="rank-btn-buy" data-buy="${r.id}" type="button">Купить ранг</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+renderRanks();
+
+/* Search & Filter Events */
+let currentFilter = "all";
+document.querySelectorAll(".filter-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentFilter = tab.dataset.filter;
+    renderRanks(currentFilter, \$("#rankSearch").value);
+  });
+});
+
+\$("#rankSearch").addEventListener("input", (e) => {
+  renderRanks(currentFilter, e.target.value);
+});
+
+/* Copy IP Functionality & Toast */
+function copyServerIp() {
+  const ip = CONFIG.serverIp;
+  navigator.clipboard.writeText(ip).then(() => {
+    showToast("IP скопирован в буфер: " + ip);
+    const copyLbl = \$("#copyLabel");
+    if (copyLbl) copyLbl.innerHTML = `<span>✓</span>`;
+    const termLbl = \$("#termCopyLabel");
+    if (termLbl) termLbl.textContent = "Скопировано!";
+    setTimeout(() => {
+      if (copyLbl) copyLbl.innerHTML = `<span>IP</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+      if (termLbl) termLbl.textContent = "Скопировать";
+    }, 2500);
+  }).catch(() => {
+    showToast("IP сервера: " + ip);
+  });
+}
+
+\$("#btnCopyIp").addEventListener("click", copyServerIp);
+\$("#btnCopyIp").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") copyServerIp(); });
+\$("#heroCopyBtn").addEventListener("click", copyServerIp);
+\$("#terminalCopyBtn").addEventListener("click", copyServerIp);
+
+function showToast(text) {
+  const t = \$("#toast");
+  t.querySelector("span").textContent = text;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3200);
+}
+
+/* ==================== REAL-TIME SERVER MONITORING API ==================== */
+async function updateServerMonitoring() {
+  try {
+    const res = await fetch(`https://api.mcstatus.io/v2/status/java/${CONFIG.serverIp}`);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    
+    if (data.online) {
+      const online = data.players.online || 0;
+      const max = data.players.max || 2026;
+      const pct = Math.max(4, Math.min(100, Math.round((online / max) * 100)));
+
+      // Update Header Pill
+      \$("#navOnlineCount").textContent = online;
+      
+      // Update Terminal Box
+      \$("#heroOnline").textContent = online;
+      \$("#heroMax").textContent = max;
+      \$("#onlineProgress").style.width = pct + "%";
+      
+      \$("#terminalStatusText").textContent = "Онлайн";
+      \$("#terminalStatus").style.color = "#34d399";
+      \$("#terminalStatus").style.borderColor = "rgba(16, 185, 129, 0.4)";
+
+      if (data.motd && data.motd.clean) {
+        \$("#heroMotd").textContent = data.motd.clean;
+      }
+    } else {
+      \$("#terminalStatusText").textContent = "Оффлайн";
+      \$("#terminalStatus").style.color = "#f43f5e";
+      \$("#terminalStatus").style.borderColor = "rgba(244, 63, 94, 0.4)";
+    }
+  } catch (err) {
+    console.warn("Monitoring update failed:", err);
+  }
+}
+
+updateServerMonitoring();
+// Refresh every 30 seconds
+setInterval(updateServerMonitoring, 30000);
+
+/* Legal & Compliance note setup */
+document.querySelectorAll("[data-mod]").forEach(e => {
+  e.textContent = e.closest("#note") ? CONFIG.moderationNote : CONFIG.moderationCode;
+  e.hidden = !CONFIG.moderationCode;
+});
+
+/* Order Dialog Elements & Logic */
+const co = $("#co"), nick = $("#nick"), agree = $("#agree"), go = $("#go"), hint = $("#hint"), pHead = $("#playerHead");
+let activeOrderRank = null;
+
+const okNick = () => /^[A-Za-z0-9_]{3,16}\$/.test(nick.value);
+
+function checkOrderForm() {
+  const hasInput = nick.value.length > 0;
+  const isValid = okNick();
+  hint.textContent = hasInput && !isValid ? "Ник должен содержать от 3 до 16 символов (только латиница, цифры и _)." : "";
+  go.disabled = !(isValid && agree.checked);
+
+  // Live Minecraft Avatar Update
+  if (isValid) {
+    pHead.src = `https://mc-heads.net/avatar/${encodeURIComponent(nick.value)}/32`;
+  } else {
+    pHead.src = `https://mc-heads.net/avatar/Steve/32`;
+  }
+}
+
+nick.addEventListener("input", checkOrderForm);
+agree.addEventListener("change", checkOrderForm);
+
+/* Perks Modal Logic */
+const perksDialog = \$("#perksDialog");
+function openPerksModal(rankId) {
+  const r = RANKS.find(item => item.id === rankId);
+  if (!r) return;
+  activeOrderRank = r;
+  \$("#perksT").textContent = `Привилегия ${r.name} — ${r.tag}`;
+  \$("#perksContent").innerHTML = `
+    <div style="display:flex; gap:16px; align-items:center; margin-bottom:18px;">
+      <img src="img/${r.id}.jpg" style="width:70px; aspect-ratio:2/3; object-fit:cover; border-radius:8px; border:1px solid ${r.color};" alt="${r.name}">
+      <div>
+        <h4 style="margin:0 0 4px; color:${r.color}; font-size:1.25rem;">${r.name}</h4>
+        <div style="color:var(--text-muted); font-size:0.9rem;">${r.role}</div>
+        <div style="font:800 1.2rem var(--font-mono); color:#fff; margin-top:4px;">${fmt(r.priceRub)} ₽ <span style="font-size:0.8rem; color:var(--text-subtle);">($${r.priceUsd})</span></div>
+      </div>
+    </div>
+    <h4>🎁 Наборы снаряжения (/kit ${r.id})</h4>
+    <p>${r.fullPerks.kits}</p>
+    <h4>⚡ Боевые команды Анархии</h4>
+    <p>${r.fullPerks.commands}</p>
+    <h4>🏰 Дома и телепортация</h4>
+    <p>${r.fullPerks.claims}</p>
+    <h4>👑 Особый статус и бонусы</h4>
+    <p>${r.fullPerks.special}</p>
+  `;
+  perksDialog.showModal();
+}
+
+\$("#perksCloseX").onclick = () => perksDialog.close();
+\$("#perksCloseBtn").onclick = () => perksDialog.close();
+\$("#perksBuyBtn").onclick = () => {
+  perksDialog.close();
+  if (activeOrderRank) openOrderModal(activeOrderRank.id);
+};
+
+function openOrderModal(rankId) {
+  const r = RANKS.find(item => item.id === rankId);
+  if (!r) return;
+  activeOrderRank = r;
+  \$("#oi").src = `img/${r.id}.jpg`;
+  \$("#oi").alt = r.name;
+  \$("#sumRank").textContent = `Привилегия ${r.name}`;
+  \$("#sumPrice").textContent = `${fmt(r.priceRub)} ₽ (${r.priceUsd} $)`;
+  nick.value = "";
+  agree.checked = false;
+  go.textContent = "Перейти к оплате";
+  checkOrderForm();
+  co.showModal();
+  nick.focus();
+}
+
+/* Click Handler delegation */
+document.addEventListener("click", e => {
+  const buyBtn = e.target.closest("[data-buy]");
+  if (buyBtn) {
+    openOrderModal(buyBtn.dataset.buy);
+    return;
+  }
+
+  const infoBtn = e.target.closest("[data-perks]");
+  if (infoBtn) {
+    openPerksModal(infoBtn.dataset.perks);
+    return;
+  }
+
+  const docBtn = e.target.closest("[data-doc]");
+  if (docBtn) {
+    const docKey = docBtn.dataset.doc;
+    const doc = DOCS[docKey];
+    if (doc) {
+      \$("#lgT").textContent = doc[0];
+      \$("#lgB").innerHTML = doc.slice(1).join("");
+      \$("#lg").showModal();
+    }
+  }
+});
+
+\$("#cancel").onclick = () => co.close();
+\$("#modalCloseX").onclick = () => co.close();
+$("#lgX").onclick = () => $("#lg").close();
+$("#docCloseX").onclick = () => $("#lg").close();
+
+document.querySelectorAll("dialog").forEach(d => {
+  d.addEventListener("click", e => {
+    if (e.target === d) d.close();
+  });
+});
+
+/* Payment Gateway Redirection */
+go.onclick = async () => {
+  if (go.disabled || !activeOrderRank) return;
+  
+  go.textContent = "Создание платежа...";
+  go.disabled = true;
+
+  try {
+    const response = await fetch('/api/pay', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        item: activeOrderRank.name,
+        amount: activeOrderRank.priceRub,
+        nick: nick.value
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.url) {
+      window.location.href = data.url; // Перекидываем на кассу Platega
+    } else {
+      alert("Ошибка платежа: Обратитесь в поддержку.");
+      go.textContent = "Перейти к оплате";
+      go.disabled = false;
+    }
+  } catch (err) {
+    alert("Ошибка соединения с сервером.");
+    go.textContent = "Перейти к оплате";
+    go.disabled = false;
+  }
+};
+
+/* ==================== ATMOSPHERIC PURPLE CRYSTAL SHARDS FX ==================== */
+const canvas = \$("#fx");
+const ctx = canvas.getContext("2d");
+let width, height;
+let shards = [];
+const shardColors = [
+  "rgba(168, 85, 247, ",
+  "rgba(192, 132, 252, ",
+  "rgba(216, 180, 254, ",
+  "rgba(244, 114, 182, ",
+  "rgba(34, 211, 238, "
+];
+
+function resizeCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  const count = Math.min(50, Math.round((width * height) / 26000));
+  shards = Array.from({ length: count }, () => createShard(true));
+}
+
+function createShard(randomY = false) {
+  return {
+    x: Math.random() * width,
+    y: randomY ? Math.random() * height : height + 10 + Math.random() * 20,
+    size: Math.random() * 3 + 1,
+    speedY: Math.random() * 0.6 + 0.2,
+    speedX: (Math.random() - 0.5) * 0.4,
+    rotation: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.03,
+    colorPrefix: shardColors[Math.floor(Math.random() * shardColors.length)],
+    baseAlpha: Math.random() * 0.5 + 0.35,
+    isDiamond: Math.random() > 0.4
+  };
+}
+
+function updateAndDrawShards() {
+  ctx.clearRect(0, 0, width, height);
+
+  for (let i = 0; i < shards.length; i++) {
+    const p = shards[i];
+    p.rotation += p.rotSpeed;
+    p.y -= p.speedY;
+    p.x += Math.sin(p.rotation) * 0.4 + p.speedX;
+
+    if (p.y < -15 || p.x < -20 || p.x > width + 20) {
+      shards[i] = createShard();
+      continue;
+    }
+
+    const currentAlpha = p.baseAlpha * (0.7 + 0.3 * Math.sin(p.rotation * 2));
+    ctx.fillStyle = p.colorPrefix + currentAlpha + ")";
+    ctx.shadowColor = p.colorPrefix + "0.7)";
+    ctx.shadowBlur = p.size * 3;
+
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation);
+
+    if (p.isDiamond) {
+      // Draw crystal diamond shard
+      ctx.beginPath();
+      ctx.moveTo(0, -p.size * 1.5);
+      ctx.lineTo(p.size, 0);
+      ctx.lineTo(0, p.size * 1.5);
+      ctx.lineTo(-p.size, 0);
+      ctx.closePath();
+      ctx.fill();
+    } else {
+      ctx.beginPath();
+      ctx.arc(0, 0, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  updateAndDrawShards();
+} else {
+  function loop() {
+    updateAndDrawShards();
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+</script>
+</body>
+</html>
