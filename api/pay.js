@@ -16,7 +16,7 @@ module.exports = async function(req, res) {
         "X-Secret": API_KEY
       },
       body: JSON.stringify({
-        paymentMethod: 10,
+        paymentMethod: "CardRu", // Исправлено по требованию Platega
         paymentDetails: {
           amount: parseInt(amount) || 0,
           currency: "RUB"
