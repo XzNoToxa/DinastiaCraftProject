@@ -1,12 +1,8 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
   const { amount, nick, item } = req.body;
-  // Merchant ID (публичный)
   const MERCHANT_ID = "36a5076d-f4ce-4dde-820e-70b3baa91f2d";
-  // Секретный API ключ берем из переменных окружения Vercel
   const API_KEY = process.env.PLATEGA_API_KEY; 
 
   try {
@@ -24,14 +20,19 @@ export default async function handler(req, res) {
       })
     });
 
-    const data = await response.json();
-    
-    if (data.payment_url) {
-      return res.status(200).json({ url: data.payment_url });
-    } else {
-      return res.status(400).json({ error: 'Ошибка создания платежа в Platega', details: data });
+    const text = await response.text();
+    try {
+      const data = JSON.parse(text);
+      // Проверяем разные форматы ответа Platega
+      if (data.url || data.payment_url) {
+        return res.status(200).json({ url: data.url || data.payment_url });
+      } else {
+        return res.status(400).json({ error: 'Отказ кассы: ' + JSON.stringify(data).substring(0, 100) });
+      }
+    } catch (e) {
+      return res.status(500).json({ error: `Platega вернула странный ответ: ${text.substring(0, 100)}` });
     }
   } catch (error) {
-    return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+    return res.status(500).json({ error: `Сетевая ошибка: ${error.message}` });
   }
 }
