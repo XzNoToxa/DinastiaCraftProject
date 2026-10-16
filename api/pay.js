@@ -16,14 +16,15 @@ module.exports = async function(req, res) {
         "X-Secret": API_KEY
       },
       body: JSON.stringify({
+        paymentMethod: "CardRu", 
         paymentDetails: {
           amount: parseInt(amount) || 0,
           currency: "RUB"
         },
         command: `lp user ${nick} parent set ${item.toLowerCase()}`, 
         description: `Покупка [${item}] для ${nick}`,
-        returnUrl: "https://www.dinastiacraft.store/",
-        failedUrl: "https://www.dinastiacraft.store/"
+        successUrl: "https://www.dinastiacraft.store/",
+        failUrl: "https://www.dinastiacraft.store/"
       })
     });
 
