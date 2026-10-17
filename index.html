@@ -2102,6 +2102,7 @@ const RANKS = [
   {
     id: "unban",
     name: "Разбан (Unban)",
+    image: "20f64e40-d543-44c5-9a65-fc5e0e2a78bd.jpg",
     priceRub: 299,
     priceUsd: "3.49",
     color: "#ef4444",
@@ -2267,7 +2268,7 @@ function renderRanks(filter = "all", query = "") {
     <article class="rank-card" style="--accent-color:${r.color}; --accent-glow:${r.glow};">
       <div class="rank-card-art">
         <span class="rank-tag">${r.tag}</span>
-        <img src="img/${r.id}.jpg" width="600" height="900" loading="lazy" alt="${r.name}" onerror="this.onerror=null;this.src='img/server-icon.png';">
+        <img src="img/${r.image || r.id + '.jpg'}" width="600" height="900" loading="lazy" alt="${r.name}" onerror="this.onerror=null;this.src='img/server-icon.png';">
       </div>
       <div class="rank-card-body">
         <div class="rank-header">
@@ -2428,7 +2429,7 @@ function openPerksModal(rankId) {
   $("#perksBuyBtn").textContent = isItem ? "Купить товар" : "Купить этот ранг";
   $("#perksContent").innerHTML = `
     <div style="display:flex; gap:16px; align-items:center; margin-bottom:18px;">
-      <img src="img/${r.id}.jpg" onerror="this.onerror=null;this.src='img/server-icon.png';" style="width:70px; aspect-ratio:2/3; object-fit:cover; border-radius:8px; border:1px solid ${r.color};" alt="${r.name}">
+      <img src="img/${r.image || r.id + '.jpg'}" onerror="this.onerror=null;this.src='img/server-icon.png';" style="width:70px; aspect-ratio:2/3; object-fit:cover; border-radius:8px; border:1px solid ${r.color};" alt="${r.name}">
       <div>
         <h4 style="margin:0 0 4px; color:${r.color}; font-size:1.25rem;">${r.name}</h4>
         <div style="color:var(--text-muted); font-size:0.9rem;">${r.role}</div>
@@ -2458,7 +2459,7 @@ function openOrderModal(rankId) {
   const r = RANKS.find(item => item.id === rankId);
   if (!r) return;
   activeOrderRank = r;
-  $("#oi").src = `img/${r.id}.jpg`;
+  $("#oi").src = `img/${r.image || r.id + '.jpg'}`;
   $("#oi").alt = r.name;
   $("#sumRank").textContent = r.category === "items" ? r.name : `Привилегия ${r.name}`;
   $("#sumPrice").textContent = `${fmt(r.priceRub)} ₽ (${r.priceUsd} $)`;
