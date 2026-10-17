@@ -1643,13 +1643,12 @@ dialog::backdrop {
       </p>
     </div>
 
-    <!-- Filter tabs & search -->
+    <!-- Filter tabs & search (ТОЛЬКО 3 ВЫБРАННЫЕ КАТЕГОРИИ) -->
     <div class="shop-controls">
       <div class="filter-tabs" role="tablist">
-        <button class="filter-tab active" data-filter="all">Все привилегии (10)</button>
-        <button class="filter-tab" data-filter="player">⚔️ Привилегии (8)</button>
-        <button class="filter-tab" data-filter="king">👑 Выбор многих игроков!</button>
+        <button class="filter-tab active" data-filter="all">Все привилегии (11)</button>
         <button class="filter-tab" data-filter="boss">💀 Уникальные привилегии (2)</button>
+        <button class="filter-tab" data-filter="items">🔓 Предметы (1)</button>
       </div>
       <div class="search-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1785,7 +1784,7 @@ dialog::backdrop {
 
     <!-- Selected Rank Preview -->
     <div class="order-selected-rank">
-      <img id="oi" class="order-rank-img" src="" alt="Ранг">
+      <img id="oi" class="order-rank-img" src="" alt="Ранг" onerror="this.onerror=null;this.src='img/server-icon.png';">
       <div class="order-rank-info">
         <span class="order-rank-name" id="sumRank">Ранг</span>
         <span class="order-rank-price" id="sumPrice">0 ₽</span>
@@ -1804,7 +1803,7 @@ dialog::backdrop {
 
     <!-- Terms Summary box -->
     <div class="terms-scrollbox" id="coDocSummary">
-      <b>Краткие условия:</b> Нажимая кнопку оплаты, вы соглашаетесь с Пользовательским соглашением и Политикой конфиденциальности. Выдача привилегии происходит автоматически в течение 1 минуты. Реквизиты банковских карт сайтом не сохраняются.
+      <b>Краткие условия:</b> Нажимая кнопку оплаты, вы соглашаетесь с <button type="button" data-doc="terms" style="background:none;border:none;color:var(--crystal-violet);cursor:pointer;text-decoration:underline;font:inherit;padding:0;">Пользовательским соглашением</button> и <button type="button" data-doc="privacy" style="background:none;border:none;color:var(--crystal-violet);cursor:pointer;text-decoration:underline;font:inherit;padding:0;">Политикой конфиденциальности</button>. Выдача привилегии происходит автоматически в течение 1 минуты. Реквизиты банковских карт сайтом не сохраняются.
     </div>
 
     <label class="checkbox-label">
@@ -1827,13 +1826,13 @@ dialog::backdrop {
 <dialog id="perksDialog" aria-labelledby="perksT">
   <div class="modal-box doc-modal">
     <div class="modal-head">
-      <h3 class="modal-title" id="perksT">Возможности Ранга</h3>
+      <h3 class="modal-title" id="perksT">Возможности</h3>
       <button class="modal-close-x" id="perksCloseX" type="button" aria-label="Закрыть">✕</button>
     </div>
     <div class="doc-content" id="perksContent"></div>
     <div class="modal-actions" style="margin-top:20px;">
       <button class="btn btn-stone btn-sm" id="perksCloseBtn" type="button">Закрыть</button>
-      <button class="btn btn-purple btn-sm" id="perksBuyBtn" type="button">Купить этот ранг</button>
+      <button class="btn btn-purple btn-sm" id="perksBuyBtn" type="button">Купить</button>
     </div>
   </div>
 </dialog>
@@ -1868,7 +1867,7 @@ const CONFIG = {
   checkoutUrl: ""
 };
 
-/* 10 Anarchy Privilege Ranks Catalog */
+/* 10 Anarchy Privilege Ranks + Unban Item Catalog */
 const RANKS = [
   {
     id: "vip",
@@ -2099,6 +2098,29 @@ const RANKS = [
       claims: "Неограниченное количество точек дома (/sethome).",
       special: "Переливающийся аметистовый префикс [Overlord]. Особая роль во главе совета сервера."
     }
+  },
+  {
+    id: "unban",
+    name: "Разбан (Unban)",
+    priceRub: 299,
+    priceUsd: "3.49",
+    color: "#ef4444",
+    glow: "rgba(239, 68, 68, 0.35)",
+    category: "items",
+    tag: "Предмет • Услуга",
+    role: "Мгновенное снятие блокировки аккаунта",
+    previewPerks: [
+      "Моментальное снятие бана на сервере",
+      "Автоматическая разблокировка за 1 минуту",
+      "Сохранение всех ваших вещей, домов и клана",
+      "Работает сразу после подтверждения оплаты"
+    ],
+    fullPerks: {
+      kits: "Не включает игровые наборы — это специальный предмет-услуга для мгновенного снятия блокировки с вашего игрового никнейма.",
+      commands: "Автоматическое выполнение серверной команды разблокировки (/unban и /pardon) для указанного вами аккаунта.",
+      claims: "Все ваши точки домов (/sethome), эндер-сундук, баланс и прогресс на сервере полностью сохраняются.",
+      special: "Позволяет немедленно вернуться в игру. При повторном грубом нарушении правил (использование читов) аккаунт может быть заблокирован снова."
+    }
   }
 ];
 
@@ -2218,16 +2240,15 @@ const DOCS = {
 const $ = s => document.querySelector(s);
 const fmt = n => n.toLocaleString("ru-RU");
 
-/* Render Rank Cards */
+/* Render Rank & Item Cards */
 function renderRanks(filter = "all", query = "") {
   const container = $("#ranksGrid");
   const q = query.trim().toLowerCase();
 
   const filtered = RANKS.filter(r => {
     let matchesFilter = true;
-    if (filter === "player") matchesFilter = r.category === "player";
-    else if (filter === "king") matchesFilter = r.category === "king";
-    else if (filter === "boss") matchesFilter = r.category === "boss";
+    if (filter === "boss") matchesFilter = r.category === "boss";
+    else if (filter === "items") matchesFilter = r.category === "items";
     
     const matchesQuery = !q || 
       r.name.toLowerCase().includes(q) || 
@@ -2238,7 +2259,7 @@ function renderRanks(filter = "all", query = "") {
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--text-subtle); font-size: 1.1rem;">Привилегий по вашему запросу не найдено.</div>`;
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--text-subtle); font-size: 1.1rem;">Товаров по вашему запросу не найдено.</div>`;
     return;
   }
 
@@ -2246,7 +2267,7 @@ function renderRanks(filter = "all", query = "") {
     <article class="rank-card" style="--accent-color:${r.color}; --accent-glow:${r.glow};">
       <div class="rank-card-art">
         <span class="rank-tag">${r.tag}</span>
-        <img src="img/${r.id}.jpg" width="600" height="900" loading="lazy" alt="Привилегия ${r.name}">
+        <img src="img/${r.id}.jpg" width="600" height="900" loading="lazy" alt="${r.name}" onerror="this.onerror=null;this.src='img/server-icon.png';">
       </div>
       <div class="rank-card-body">
         <div class="rank-header">
@@ -2269,7 +2290,7 @@ function renderRanks(filter = "all", query = "") {
 
         <div class="rank-actions">
           <button class="rank-btn-info" data-perks="${r.id}" type="button">Подробнее</button>
-          <button class="rank-btn-buy" data-buy="${r.id}" type="button">Купить ранг</button>
+          <button class="rank-btn-buy" data-buy="${r.id}" type="button">${r.category === "items" ? "Купить" : "Купить ранг"}</button>
         </div>
       </div>
     </article>
@@ -2316,11 +2337,13 @@ $("#btnCopyIp").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.
 $("#heroCopyBtn").addEventListener("click", copyServerIp);
 $("#terminalCopyBtn").addEventListener("click", copyServerIp);
 
+let toastTimer = null;
 function showToast(text) {
   const t = $("#toast");
   t.querySelector("span").textContent = text;
   t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 3200);
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
 }
 
 /* ==================== REAL-TIME SERVER MONITORING API ==================== */
@@ -2351,6 +2374,7 @@ async function updateServerMonitoring() {
         $("#heroMotd").textContent = data.motd.clean;
       }
     } else {
+      $("#navOnlineCount").textContent = "0";
       $("#terminalStatusText").textContent = "Оффлайн";
       $("#terminalStatus").style.color = "#f43f5e";
       $("#terminalStatus").style.borderColor = "rgba(244, 63, 94, 0.4)";
@@ -2374,7 +2398,7 @@ document.querySelectorAll("[data-mod]").forEach(e => {
 const co = $("#co"), nick = $("#nick"), agree = $("#agree"), go = $("#go"), hint = $("#hint"), pHead = $("#playerHead");
 let activeOrderRank = null;
 
-const okNick = () => /^[A-Za-z0-9_]{3,16}$/.test(nick.value);
+const okNick = () => /^[A-Za-z0-9_]{3,16}$/.test(nick.value.trim());
 
 function checkOrderForm() {
   const hasInput = nick.value.length > 0;
@@ -2399,23 +2423,25 @@ function openPerksModal(rankId) {
   const r = RANKS.find(item => item.id === rankId);
   if (!r) return;
   activeOrderRank = r;
-  $("#perksT").textContent = `Привилегия ${r.name} — ${r.tag}`;
+  const isItem = r.category === "items";
+  $("#perksT").textContent = isItem ? `${r.name} — ${r.tag}` : `Привилегия ${r.name} — ${r.tag}`;
+  $("#perksBuyBtn").textContent = isItem ? "Купить товар" : "Купить этот ранг";
   $("#perksContent").innerHTML = `
     <div style="display:flex; gap:16px; align-items:center; margin-bottom:18px;">
-      <img src="img/${r.id}.jpg" style="width:70px; aspect-ratio:2/3; object-fit:cover; border-radius:8px; border:1px solid ${r.color};" alt="${r.name}">
+      <img src="img/${r.id}.jpg" onerror="this.onerror=null;this.src='img/server-icon.png';" style="width:70px; aspect-ratio:2/3; object-fit:cover; border-radius:8px; border:1px solid ${r.color};" alt="${r.name}">
       <div>
         <h4 style="margin:0 0 4px; color:${r.color}; font-size:1.25rem;">${r.name}</h4>
         <div style="color:var(--text-muted); font-size:0.9rem;">${r.role}</div>
         <div style="font:800 1.2rem var(--font-mono); color:#fff; margin-top:4px;">${fmt(r.priceRub)} ₽ <span style="font-size:0.8rem; color:var(--text-subtle);">($${r.priceUsd})</span></div>
       </div>
     </div>
-    <h4>🎁 Наборы снаряжения (/kit ${r.id})</h4>
+    <h4>${isItem ? "📦 Описание услуги" : `🎁 Наборы снаряжения (/kit ${r.id})`}</h4>
     <p>${r.fullPerks.kits}</p>
-    <h4>⚡ Боевые команды Анархии</h4>
+    <h4>⚡ Выполнение на сервере</h4>
     <p>${r.fullPerks.commands}</p>
-    <h4>🏰 Дома и телепортация</h4>
+    <h4>🏰 Имущество и точки домов</h4>
     <p>${r.fullPerks.claims}</p>
-    <h4>👑 Особый статус и бонусы</h4>
+    <h4>👑 Особые условия</h4>
     <p>${r.fullPerks.special}</p>
   `;
   perksDialog.showModal();
@@ -2434,7 +2460,7 @@ function openOrderModal(rankId) {
   activeOrderRank = r;
   $("#oi").src = `img/${r.id}.jpg`;
   $("#oi").alt = r.name;
-  $("#sumRank").textContent = `Привилегия ${r.name}`;
+  $("#sumRank").textContent = r.category === "items" ? r.name : `Привилегия ${r.name}`;
   $("#sumPrice").textContent = `${fmt(r.priceRub)} ₽ (${r.priceUsd} $)`;
   nick.value = "";
   agree.checked = false;
@@ -2493,9 +2519,9 @@ go.onclick = async () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        item: activeOrderRank.name,
+        item: activeOrderRank.id,
         amount: activeOrderRank.priceRub,
-        nick: nick.value
+        nick: nick.value.trim()
       })
     });
 
